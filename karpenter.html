@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<title>Create and Manage Kubernetes Clusters with Cluster API and ArgoCD</title>
+<!--
+
+Template 2085 Neuron
+
+http://www.tooplate.com/view/2085-neuron
+
+-->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+
+<!-- Main css -->
+<link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css?family=Lora|Merriweather:300,400" rel="stylesheet">
+
+</head>
+<body>
+
+<!-- PRE LOADER -->
+
+<div class="preloader">
+<div class="sk-spinner sk-spinner-wordpress">
+<span class="sk-inner-circle"></span>
+</div>
+</div>
+
+<!-- Navigation section  -->
+
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+<div class="container">
+
+<div class="navbar-header">
+<button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+<span class="icon icon-bar"></span>
+<span class="icon icon-bar"></span>
+<span class="icon icon-bar"></span>
+</button>
+<a href="index.html" class="navbar-brand">Thi</a>
+</div>
+<div class="collapse navbar-collapse">
+<ul class="nav navbar-nav navbar-right">
+<li><a href="index.html">Home</a></li>
+<li><a href="https://dinhdobathi.com">Thi's CV</a></li>
+<li><a href="gallery.html">Gallery</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</div>
+
+</div>
+</div>
+
+<!-- Home Section -->
+
+<section id="home" class="main-single-post parallax-section">
+<div class="overlay"></div>
+<div class="container">
+<div class="row">
+
+<div class="col-md-12 col-sm-12">
+<h1>Karpenter</h1>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- Blog Single Post Section -->
+
+<section id="blog-single-post">
+<div class="container">
+<div class="row">
+
+<div class="col-md-offset-1 col-md-10 col-sm-12">
+<div class="blog-single-post-thumb">
+
+
+<div class="blog-post-title">
+<h2></a></h2>
+</div>
+
+<div class="blog-post-format">
+<span><a href="#"><img src="images/author-image1.jpg" class="img-responsive img-circle"> Thi</a></span>
+<span><i class="fa fa-date"></i> Sept 22, 2022</span>
+<span><a href="#"><i class="fa fa-comment-o"></i> 0 Comments</a></span>
+</div>
+<div class="blog-post-des">
+
+
+<div class="blog-post-image">
+<img src="images/karpenter1.png" class="img-responsive" alt="Blog Image 3">
+</div>
+<p><span class="label info">Info</span></p>
+<p>Note: <b><i>This is my personal blog, all contents here is not for commercial, they were collected from many sources which will put in Ref section</i></b>  </p>
+
+<h3>What is Karpenter     ? </h3>
+<p>Karpenter is a node-based scaling solution created for <code>Kubernetes</code> and aims to improve <code>efficiency costs</code> and . It's a great solution because we don't have to configure <code>instance types</code>  or create  <code> node pools </code> , which drastically simplifies configuration. On the other hand, integration with Spot instances is painless and allows us to reduce our costs (up to 90% less than On-Demand instances)
+
+<b>Reasons to use Karpenter</b> 
+<p>Before the launch of Karpenter, Kubernetes users relied primarily on <code>Amazon EC2 Auto Scaling groups </code>  and <code>the Kubernetes Cluster Autoscaler (CAS)</code>  to dynamically adjust the compute capacity of their clusters. With Karpenter, you don’t need to create dozens of node groups to achieve the flexibility and diversity you get with Karpenter. Moreover, Karpenter is not as tightly coupled to Kubernetes versions (as CAS is) and doesn’t require you to jump between AWS and Kubernetes APIs.</p>
+
+
+<p>Karpenter consolidates instance orchestration responsibilities within a single system, which is simpler, more stable and cluster-aware. Karpenter was designed to overcome some of the challenges presented by Cluster Autoscaler by providing simplified ways to:</p>
+
+<ul>
+     <li>Provision nodes based on workload requirements</li>
+     <li>Create diverse node configurations by instance type, using flexible workload provisioner options. Instead of managing many specific custom node groups, Karpenter could let you manage diverse workload capacity with a single, flexible provisioner.</li>
+     <li>Achieve improved pod scheduling at scale by quickly launching nodes and scheduling pods.</li>
+   </ul>
+
+</p>
+</div>
+
+
+<p></p>
+
+
+
+<h3>What need for an auto-scaling-node kubernetes cluster?</h3>
+
+<ol>
+     <li>AWS CLI</li>
+     <li>eksctl </li>
+     <li>kubectl</li>
+     <li>helm</li>
+   </ol>
+
+<p>Configure the AWS CLI with a user that has sufficient privileges to create an <code>EKS cluster</code> , <code>IAM Roles</code> . Verify that the CLI can authenticate properly by running aws sts get-caller-identity. 
+</p>
+
+
+
+<h3>Karpenter Architecture?</h3>
+<div class="blog-post-image">
+     <img src="images/2021-karpenter-diagram.png" class="img-responsive" alt="Blog Image 3">
+     </div>
+
+
+<p>Karpenter works with the Kubernetes scheduler observing incoming pods throughout the lifetime of the cluster. It starts or stops nodes to optimize application availability and cluster utilization. When there is enough capacity in the cluster, the Kubernetes scheduler will place the incoming pods as usual.</p>
+
+ <p>When pods are started that cannot be scheduled using existing cluster capacity, Karpenter bypasses the Kubernetes scheduler and works directly with your provider's compute service to start the minimum compute resources needed in those pods and associate pods with provisioning nodes.</p>    
+     
+<p>When pods are removed , Karpenter looks for opportunities to terminate underutilized nodes.</p> 
+
+
+
+<h3>Set environment variables </h3>
+
+<p>After setting up the tools, set the Karpenter version number:</p>
+
+<pre class="wp-block-code language-bash" tabindex="0"><code lang="bash" class="language-bash">export KARPENTER_VERSION=v0.26.1</code></pre>
+
+
+<p>Then set the following environment variable:</p>
+<pre class="wp-block-code language-bash" tabindex="0"><code lang="bash" class="language-bash"></code>export CLUSTER_NAME="${USER}-karpenter-demo"
+export AWS_DEFAULT_REGION="ap-southeast-1"
+export AWS_ACCOUNT_ID="$(aws sts get-caller-identity --query Account --output text)"
+export TEMPOUT=$(mktemp)</pre>
+<span class="label danger"><b> Note: </b></span>
+<div class="alert">
+     <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+     If you open a new shell to run steps in this procedure, you need to set some or all of the environment variables again. To remind yourself of these values, type:
+   </div>
+   
+
+   <pre class="wp-block-code language-bash" tabindex="0"><code lang="bash" class="language-bash">echo $KARPENTER_VERSION $CLUSTER_NAME $AWS_DEFAULT_REGION $AWS_ACCOUNT_ID $TEMPOUT</code></pre>
+
+
+   <h3>Create resources </h3>
+
+<p>Create a basic cluster with <code>eksctl</code> . The following cluster configuration will: </p>
+<ul>
+     <li>Use CloudFormation to set up the infrastructure needed by the EKS cluster.</li>
+     <li>Create a Kubernetes service account and AWS IAM Role, and associate them using IRSA to let Karpenter launch instances. </li>
+     <li>Add the Karpenter node role to the aws-auth configmap to allow nodes to connect.
+     </li>
+     <li>Use AWS EKS managed node groups for the kube-system and karpenter namespaces. Uncomment fargateProfiles settings (and comment out managedNodeGroups settings) to use Fargate for both namespaces instead.
+     </li>
+     <li>Set KARPENTER_IAM_ROLE_ARN variables.
+     </li>
+     <li>Create a role to allow spot instances.
+     </li>
+     <li>Run helm to install karpenter
+     </li>
+   </ul>
+
+
+<p>Get the CloudFormation pre-deploy code </p>
+
+<pre class="wp-block-code language-bash" tabindex="0"><code lang="bash" class="language-bash">curl -fsSL https://karpenter.sh/"${KARPENTER_VERSION}"/getting-started/getting-started-with-eksctl/cloudformation.yaml  > $TEMPOUT && cat $TEMPOUT
+</code></pre>
+<p>Then you will have these config, if you need to modify, please feel free to do so </p>
+
+
+<pre class="wp-block-code language-yaml" tabindex="0"><code lang="yaml" class="language-yaml"><span class="token key atrule"></span>
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Resources used by https://github.com/aws/karpenter
+Parameters:
+     ClusterName:
+     Type: String
+     Description: "EKS cluster name"
+Resources:
+     KarpenterNodeInstanceProfile:
+     Type: "AWS::IAM::InstanceProfile"
+     Properties:
+          InstanceProfileName: !Sub "KarpenterNodeInstanceProfile-${ClusterName}"
+          Path: "/"
+          Roles:
+          - Ref: "KarpenterNodeRole"
+     KarpenterNodeRole:
+     Type: "AWS::IAM::Role"
+     Properties:
+          RoleName: !Sub "KarpenterNodeRole-${ClusterName}"
+          Path: /
+          AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          - Effect: Allow
+               Principal:
+               Service:
+                    !Sub "ec2.${AWS::URLSuffix}"
+               Action:
+               - "sts:AssumeRole"
+          ManagedPolicyArns:
+          - !Sub "arn:${AWS::Partition}:iam::aws:policy/AmazonEKS_CNI_Policy"
+          - !Sub "arn:${AWS::Partition}:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+          - !Sub "arn:${AWS::Partition}:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+          - !Sub "arn:${AWS::Partition}:iam::aws:policy/AmazonSSMManagedInstanceCore"
+     KarpenterControllerPolicy:
+     Type: AWS::IAM::ManagedPolicy
+     Properties:
+          ManagedPolicyName: !Sub "KarpenterControllerPolicy-${ClusterName}"
+          PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          - Effect: Allow
+               Resource: "*"
+               Action:
+               # Write Operations
+               - ec2:CreateFleet
+               - ec2:CreateLaunchTemplate
+               - ec2:CreateTags
+               - ec2:DeleteLaunchTemplate
+               - ec2:RunInstances
+               - ec2:TerminateInstances
+               # Read Operations
+               - ec2:DescribeAvailabilityZones
+               - ec2:DescribeImages
+               - ec2:DescribeInstances
+               - ec2:DescribeInstanceTypeOfferings
+               - ec2:DescribeInstanceTypes
+               - ec2:DescribeLaunchTemplates
+               - ec2:DescribeSecurityGroups
+               - ec2:DescribeSpotPriceHistory
+               - ec2:DescribeSubnets
+               - pricing:GetProducts
+               - ssm:GetParameter
+          - Effect: Allow
+               Action:
+               # Write Operations
+               - sqs:DeleteMessage
+               # Read Operations
+               - sqs:GetQueueAttributes
+               - sqs:GetQueueUrl
+               - sqs:ReceiveMessage
+               Resource: !GetAtt KarpenterInterruptionQueue.Arn
+          - Effect: Allow
+               Action:
+               - iam:PassRole
+               Resource: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/KarpenterNodeRole-${ClusterName}"
+          - Effect: Allow
+               Action:
+               - eks:DescribeCluster
+               Resource: !Sub "arn:${AWS::Partition}:eks:${AWS::Region}:${AWS::AccountId}:cluster/${ClusterName}"
+     KarpenterInterruptionQueue:
+     Type: AWS::SQS::Queue
+     Properties:
+          QueueName: !Sub "${ClusterName}"
+          MessageRetentionPeriod: 300
+     KarpenterInterruptionQueuePolicy:
+     Type: AWS::SQS::QueuePolicy
+     Properties:
+          Queues:
+          - !Ref KarpenterInterruptionQueue
+          PolicyDocument:
+          Id: EC2InterruptionPolicy
+          Statement:
+          - Effect: Allow
+               Principal:
+               Service:
+                    - events.amazonaws.com
+                    - sqs.amazonaws.com
+               Action: sqs:SendMessage
+               Resource: !GetAtt KarpenterInterruptionQueue.Arn
+     ScheduledChangeRule:
+     Type: 'AWS::Events::Rule'
+     Properties:
+          EventPattern:
+          source:
+          - aws.health
+          detail-type:
+          - AWS Health Event
+          Targets:
+          - Id: KarpenterInterruptionQueueTarget
+          Arn: !GetAtt KarpenterInterruptionQueue.Arn
+     SpotInterruptionRule:
+     Type: 'AWS::Events::Rule'
+     Properties:
+          EventPattern:
+          source:
+          - aws.ec2
+          detail-type:
+          - EC2 Spot Instance Interruption Warning
+          Targets:
+          - Id: KarpenterInterruptionQueueTarget
+          Arn: !GetAtt KarpenterInterruptionQueue.Arn
+     RebalanceRule:
+     Type: 'AWS::Events::Rule'
+     Properties:
+          EventPattern:
+          source:
+          - aws.ec2
+          detail-type:
+          - EC2 Instance Rebalance Recommendation
+          Targets:
+          - Id: KarpenterInterruptionQueueTarget
+          Arn: !GetAtt KarpenterInterruptionQueue.Arn
+     InstanceStateChangeRule:
+     Type: 'AWS::Events::Rule'
+     Properties:
+          EventPattern:
+          source:
+          - aws.ec2
+          detail-type:
+          - EC2 Instance State-change Notification
+          Targets:
+          - Id: KarpenterInterruptionQueueTarget
+          Arn: !GetAtt KarpenterInterruptionQueue.Arn
+</pre>
+
+<p>Apply the CloudFormation with this command </p>
+
+<pre class="wp-block-code language-bash" tabindex="0"><code lang="bash" class="language-bash">aws cloudformation deploy \
+     --stack-name "Karpenter-${CLUSTER_NAME}" \
+     --template-file "${TEMPOUT}" \
+     --capabilities CAPABILITY_NAMED_IAM \
+     --parameter-overrides "ClusterName=${CLUSTER_NAME}"
+</code></pre>
+
+<div class="blog-post-image">
+     <img src="images/deploy-cf.png" class="img-responsive" alt="Blog Image 3">
+</div>
+
+
+
+<p>Create a eks cluster with these config below</p>
+<pre class="wp-block-code language-bash" tabindex="0">
+<code lang="bash" class="language-bash"> 
+eksctl create cluster -f - << EOF
+---
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+     name: ${CLUSTER_NAME}
+     region: ${AWS_DEFAULT_REGION}
+     version: "1.24"
+     tags:
+     karpenter.sh/discovery: ${CLUSTER_NAME}
+
+iam:
+     withOIDC: true
+     serviceAccounts:
+     - metadata:
+          name: karpenter
+          namespace: karpenter
+     roleName: ${CLUSTER_NAME}-karpenter
+     attachPolicyARNs:
+     - arn:aws:iam::${AWS_ACCOUNT_ID}:policy/KarpenterControllerPolicy-${CLUSTER_NAME}
+     roleOnly: true
+
+iamIdentityMappings:
+- arn: "arn:aws:iam::${AWS_ACCOUNT_ID}:role/KarpenterNodeRole-${CLUSTER_NAME}"
+     username: system:node:{{EC2PrivateDNSName}}
+     groups:
+     - system:bootstrappers
+     - system:nodes
+
+managedNodeGroups:
+- instanceType: m5.large
+     amiFamily: AmazonLinux2
+     name: ${CLUSTER_NAME}-ng
+     desiredCapacity: 2
+     minSize: 1
+     maxSize: 10
+
+## Optionally run on fargate
+# fargateProfiles:
+# - name: karpenter
+#  selectors:
+#  - namespace: karpenter
+EOF
+
+export CLUSTER_ENDPOINT="$(aws eks describe-cluster --name ${CLUSTER_NAME} --query "cluster.endpoint" --output text)"
+export KARPENTER_IAM_ROLE_ARN="arn:aws:iam::${AWS_ACCOUNT_ID}:role/${CLUSTER_NAME}-karpenter"
+
+echo $CLUSTER_ENDPOINT $KARPENTER_IAM_ROLE_ARN
+     
+</code>
+</pre>
+<div class="blog-post-image">
+     <img src="images/createcluster.png" class="img-responsive" alt="Blog Image 3">
+</div>
+
+<p>Verify if it ok </p>
+
+<pre class="wp-block-code language-bash" tabindex="0"><code lang="bash" class="language-bash">aws iam create-service-linked-role --aws-service-name spot.amazonaws.com || true
+     # If the role has already been successfully created, you will see:
+     # An error occurred (InvalidInput) when calling the CreateServiceLinkedRole operation: Service role name AWSServiceRoleForEC2Spot has been taken in this account, please try a different suffix.
+     
+     helm upgrade --install karpenter oci://public.ecr.aws/karpenter/karpenter --version ${KARPENTER_VERSION} --namespace karpenter --create-namespace \
+       --set serviceAccount.annotations."eks\.amazonaws\.com/role-arn"=${KARPENTER_IAM_ROLE_ARN} \
+       --set settings.aws.clusterName=${CLUSTER_NAME} \
+       --set settings.aws.defaultInstanceProfile=KarpenterNodeInstanceProfile-${CLUSTER_NAME} \
+       --set settings.aws.interruptionQueueName=${CLUSTER_NAME} \
+       --wait
+</code></pre>
+
+<div class="blog-post-image">
+     <img src="images/install-karpenter.png" class="img-responsive" alt="Blog Image 3">
+</div>
+
+<p>Create a CRD Karpenter with Provisioner and Node Template</p>
+
+
+<pre class="wp-block-code language-bash" tabindex="0"><code lang="bash" class="language-bash">nano karpenter-crd.yaml
+</code></pre>
+
+
+<pre class="wp-block-code language-yaml" tabindex="0"><code lang="yaml" class="language-yaml"><span class="token key atrule"></span>
+apiVersion: karpenter.sh/v1alpha5
+kind: Provisioner
+metadata:
+     name: default
+spec:
+     requirements:
+     - key: karpenter.sh/capacity-type
+          operator: In
+          values: ["spot"]
+     limits:
+     resources:
+          cpu: 1000
+     providerRef:
+     name: default
+     ttlSecondsAfterEmpty: 30
+---
+apiVersion: karpenter.k8s.aws/v1alpha1
+kind: AWSNodeTemplate
+metadata:
+     name: default
+spec:
+     subnetSelector:
+     karpenter.sh/discovery: <code>${CLUSTER_NAME}</code> 
+     securityGroupSelector:
+     karpenter.sh/discovery: ${CLUSTER_NAME}
+</pre>
+
+<p>You can define more requirements like <code>instance-type</code>  or <code>architect</code> by using <a href="https://k8slens.dev/">this link</a>, by defautl, if no instance type constraints are defined, Karpenter will set default instance type constraints on your Provisioner that supports most common user workloads: </p>
+<pre class="wp-block-code language-yaml" tabindex="0"><code lang="yaml" class="language-yaml"><span class="token key atrule"></span>
+requirements:
+- key: karpenter.k8s.aws/instance-category
+     operator: In
+     values: ["c", "m", "r"]
+- key: karpenter.k8s.aws/instance-generation
+     operator: Gt
+     values: ["2"]
+ </pre>
+
+<p><code>kubectl apply -f karpenter-crd.yaml</code></p>
+
+<div class="blog-post-image">
+     <img src="images/create-provisioner.png" class="img-responsive" alt="Blog Image 3">
+</div>
+
+<h3>Testing </h3>
+
+<p>At the time we provision the eks, only 2 nodes as worker role</p>
+<div class="blog-post-image">
+     <img src="images/node-org.png" class="img-responsive" alt="Blog Image 3">
+</div>
+
+<p>We will try to create a deployment with <code>pause</code> image from kubernetes with replica=0, then scale up to 5 and see the no-of-node increase <code> automatically</code></p>
+
+
+<pre class="wp-block-code language-bash" tabindex="0"><code lang="bash" class="language-bash">
+cat << EOF | kubectl apply -f -
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+     name: inflate
+spec:
+     replicas: 0
+     selector:
+     matchLabels:
+          app: inflate
+     template:
+     metadata:
+          labels:
+          app: inflate
+     spec:
+          terminationGracePeriodSeconds: 0
+          containers:
+          - name: inflate
+          image: public.ecr.aws/eks-distro/kubernetes/pause:3.7
+          resources:
+               requests:
+               cpu: 1
+EOF
+
+</code></pre>
+
+<p>then try to scale the deployment to 5 replicas</p>
+
+<p><code>kubectl scale deployment inflate --replicas 5</code></p>
+<p><code>kubectl logs -f -n karpenter -l app.kubernetes.io/name=karpenter -c controller</code></p>
+<div class="blog-post-image">
+     <img src="images/log1.png" class="img-responsive" alt="Blog Image 3">
+</div>
+
+
+<p>Try to scale-down to see if nodes wwould be down too</p>
+<p><code>kubectl scale deployment inflate --replicas 0</code></p>
+<p><code>kubectl logs -f -n karpenter -l app.kubernetes.io/name=karpenter -c controller</code></p>
+<div class="blog-post-image">
+     <img src="images/log2.png" class="img-responsive" alt="Blog Image 3">
+</div>
+
+
+<p><span class="label info">Reference:</span></p>
+
+<p>
+<ul>
+     <li><p><a href="https://makendran.hashnode.dev/just-in-time-worker-nodes-with-karpenter">Just-in-time Worker Nodes with Karpenter</a></p></li>
+     <li><p><a href="https://karpenter.sh/v0.26.1/getting-started/getting-started-with-eksctl/">Getting Started with Karpenter  </a></p> </li>
+     <li><p><a href="https://karpenter.sh/v0.26.1/concepts/provisioners/">Provisioners</a></p></li>
+     <li><p><a href="https://aws.amazon.com/premiumsupport/knowledge-center/eks-install-karpenter/">eks-install-karpenter</a></p></li>
+     </li>
+
+   </ul>
+
+</p>
+
+<p>
+</section>
+
+<!-- Footer Section -->
+
+<footer>
+<div class="container">
+<div class="row">
+
+<div class="col-md-5 col-md-offset-1 col-sm-6">
+<h3>Thi's Blog</h3>
+<p>Some of content I will made a copy from other one, and some of others generated by me.</p>
+<div class="footer-copyright">
+<p>Copyright &copy; 2017 DinhDoBaThi</p>
+</div>
+</div>
+
+<div class="col-md-4 col-md-offset-1 col-sm-6">
+<h3>Talk to us</h3>
+<p><i class="fa fa-globe"></i> District 7, HCMC</p>
+<p><i class="fa fa-phone"></i> 077xxx9219992</p>
+<p><i class="fa fa-save"></i> info@dinhdobathi.com</p>
+</div>
+
+<div class="clearfix col-md-12 col-sm-12">
+<hr>
+</div>
+
+<div class="col-md-12 col-sm-12">
+<ul class="social-icon">
+<li><a href="#" class="fa fa-facebook"></a></li>
+<li><a href="#" class="fa fa-twitter"></a></li>
+<li><a href="#" class="fa fa-google-plus"></a></li>
+<li><a href="#" class="fa fa-dribbble"></a></li>
+<li><a href="#" class="fa fa-linkedin"></a></li>
+</ul>
+</div>
+
+</div>
+</div>
+</footer>
+<!-- Back top -->
+<a href="#back-top" class="go-top"><i class="fa fa-angle-up"></i></a>
+
+<!-- SCRIPTS -->
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.parallax.js"></script>
+<script src="js/custom.js"></script>
+
+</body>
+</html>
