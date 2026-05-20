@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="820" viewBox="0 0 1440 820" role="img" aria-labelledby="title desc">
+  <title id="title">n8n Gateway Security Layers</title>
+  <desc id="desc">Security layers include WAF, source verification, destination allow-list, SSRF protection, encrypted secrets, and admin separation.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1440" y1="0" y2="820" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#030712"/>
+      <stop offset=".55" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#052e2b"/>
+    </linearGradient>
+    <linearGradient id="shield" x1="0" x2="1">
+      <stop stop-color="#22c55e"/>
+      <stop offset=".5" stop-color="#38bdf8"/>
+      <stop offset="1" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1440" height="820" fill="url(#bg)"/>
+  <g opacity=".24" stroke="#38bdf8" stroke-width="1">
+    <path d="M80 160h1280M80 280h1280M80 400h1280M80 520h1280M80 640h1280"/>
+    <path d="M220 70v680M420 70v680M620 70v680M820 70v680M1020 70v680M1220 70v680"/>
+  </g>
+  <text x="78" y="92" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="44" font-weight="800">Security layers at the edge</text>
+  <text x="80" y="132" fill="#cbd5e1" font-family="Inter, Arial, sans-serif" font-size="20">A public gateway must not become a tunnel into private infrastructure.</text>
+  <path d="M720 208 934 292v160c0 160-214 252-214 252S506 612 506 452V292z" fill="url(#shield)" opacity=".2" stroke="url(#shield)" stroke-width="6"/>
+  <text x="650" y="438" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800">Gateway</text>
+  <text x="615" y="480" fill="#dbeafe" font-family="JetBrains Mono, monospace" font-size="18">validate · route · sign · log</text>
+  <g font-family="Inter, Arial, sans-serif">
+    <g transform="translate(110 230)">
+      <rect width="330" height="110" rx="18" fill="#0f172a" stroke="#38bdf8" stroke-opacity=".45" stroke-width="2"/>
+      <text x="26" y="44" fill="#f8fafc" font-size="22" font-weight="800">Cloudflare WAF</text>
+      <text x="26" y="76" fill="#cbd5e1" font-size="16">TLS, edge rules, rate filtering</text>
+    </g>
+    <g transform="translate(1000 230)">
+      <rect width="330" height="110" rx="18" fill="#0f172a" stroke="#a855f7" stroke-opacity=".45" stroke-width="2"/>
+      <text x="26" y="44" fill="#f8fafc" font-size="22" font-weight="800">Admin separation</text>
+      <text x="26" y="76" fill="#cbd5e1" font-size="16">Webhook path is not admin UI</text>
+    </g>
+    <g transform="translate(110 392)">
+      <rect width="330" height="110" rx="18" fill="#0f172a" stroke="#22c55e" stroke-opacity=".45" stroke-width="2"/>
+      <text x="26" y="44" fill="#f8fafc" font-size="22" font-weight="800">Provider signatures</text>
+      <text x="26" y="76" fill="#cbd5e1" font-size="16">Slack HMAC, GChat JWT, headers</text>
+    </g>
+    <g transform="translate(1000 392)">
+      <rect width="330" height="110" rx="18" fill="#0f172a" stroke="#f59e0b" stroke-opacity=".45" stroke-width="2"/>
+      <text x="26" y="44" fill="#f8fafc" font-size="22" font-weight="800">SSRF guard</text>
+      <text x="26" y="76" fill="#cbd5e1" font-size="16">Destination allow-list required</text>
+    </g>
+    <g transform="translate(110 554)">
+      <rect width="330" height="110" rx="18" fill="#0f172a" stroke="#38bdf8" stroke-opacity=".45" stroke-width="2"/>
+      <text x="26" y="44" fill="#f8fafc" font-size="22" font-weight="800">Encrypted secrets</text>
+      <text x="26" y="76" fill="#cbd5e1" font-size="16">Route secrets protected at rest</text>
+    </g>
+    <g transform="translate(1000 554)">
+      <rect width="330" height="110" rx="18" fill="#0f172a" stroke="#22c55e" stroke-opacity=".45" stroke-width="2"/>
+      <text x="26" y="44" fill="#f8fafc" font-size="22" font-weight="800">Delivery audit</text>
+      <text x="26" y="76" fill="#cbd5e1" font-size="16">Status, attempts, latency, errors</text>
+    </g>
+  </g>
+  <g stroke="#64748b" stroke-width="3" stroke-linecap="round">
+    <path d="M440 285h90M910 285h90M440 447h80M920 447h80M440 609h110M890 609h110"/>
+  </g>
+</svg>

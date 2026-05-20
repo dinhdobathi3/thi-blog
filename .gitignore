@@ -1,0 +1,4 @@
+# Claude Code local backend config (contains credentials)
+.claude/settings.local.json
+.DS_Store
+.codex/

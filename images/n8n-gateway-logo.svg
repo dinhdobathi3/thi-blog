@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" fill="none" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">n8n Webhook Gateway</title>
+  <desc id="desc">Angular gateway mark with inbound webhook rails, center validation hex, and upward forwarding route.</desc>
+  <defs>
+    <linearGradient id="gold" x1="41" x2="88" y1="38" y2="92" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFE66D"/>
+      <stop offset=".55" stop-color="#FCD535"/>
+      <stop offset="1" stop-color="#F0B90B"/>
+    </linearGradient>
+    <linearGradient id="ink" x1="27" x2="103" y1="21" y2="113" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#24272D"/>
+      <stop offset="1" stop-color="#111317"/>
+    </linearGradient>
+    <filter id="shadow" width="104" height="112" x="12" y="10" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="8" flood-color="#000" flood-opacity=".34" stdDeviation="7"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <path fill="url(#ink)" d="M60 18h8l14 26H70v68l-6 7-6-7V44H46z"/>
+    <path fill="url(#ink)" d="m20 43 27-19v24l22 16-22 16v27l8 9-20 16-15-18z"/>
+    <path fill="url(#ink)" d="m108 43-27-19v24L59 64l22 16v27l-8 9 20 16 15-18z"/>
+    <path fill="#FCD535" d="m29 61 9 7v35l-9-11z"/>
+    <path fill="#FCD535" d="m99 61-9 7v35l9-11z"/>
+    <path stroke="#394047" stroke-linecap="round" stroke-width="5" d="m30 76 8-8M90 68l8 8M46 44l8-8M74 36l8 8"/>
+    <path stroke="#394047" stroke-linecap="round" stroke-width="5" d="m56 78 8 8 8-8"/>
+    <path fill="url(#gold)" d="m64 45 22 13v26l-22 13-22-13V58z"/>
+    <path fill="#FFB81C" d="m64 45 22 13-22 13-22-13z" opacity=".55"/>
+    <path fill="#fff" d="m64 60 10 6v12l-10 6-10-6V66z"/>
+    <path stroke="#18181B" stroke-linecap="round" stroke-linejoin="round" stroke-width="5" d="M64 24v30"/>
+    <path fill="#18181B" d="m64 15 12 20H52z"/>
+  </g>
+  <path stroke="#3B82F6" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M12 54h17l13 9"/>
+  <path stroke="#3B82F6" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M12 74h17l13-9"/>
+  <circle cx="12" cy="54" r="4" fill="#3B82F6"/>
+  <circle cx="12" cy="74" r="4" fill="#3B82F6"/>
+  <path stroke="#FF6D5A" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M86 64h30"/>
+  <circle cx="116" cy="64" r="5" fill="#FF6D5A"/>
+</svg>

@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="820" viewBox="0 0 1440 820" role="img" aria-labelledby="title desc">
+  <title id="title">n8n Webhook Gateway Architecture</title>
+  <desc id="desc">External SaaS events pass through Cloudflare WAF, request validation, routing, and private forwarding into internal n8n.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1440" y1="0" y2="820" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#020617"/>
+      <stop offset=".48" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" x2="1">
+      <stop stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#3b82f6"/>
+    </linearGradient>
+    <linearGradient id="violet" x1="0" x2="1">
+      <stop stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#a855f7"/>
+    </linearGradient>
+    <linearGradient id="green" x1="0" x2="1">
+      <stop stop-color="#22c55e"/>
+      <stop offset="1" stop-color="#84cc16"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="11" result="blur"/>
+      <feColorMatrix in="blur" values="0 0 0 0 0.16 0 0 0 0 0.67 0 0 0 0 1 0 0 0 .55 0"/>
+      <feBlend in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <rect width="1440" height="820" fill="url(#bg)"/>
+  <g opacity=".35">
+    <path stroke="#38bdf8" stroke-width="1" d="M0 120h1440M0 240h1440M0 360h1440M0 480h1440M0 600h1440M0 720h1440"/>
+    <path stroke="#38bdf8" stroke-width="1" d="M120 0v820M240 0v820M360 0v820M480 0v820M600 0v820M720 0v820M840 0v820M960 0v820M1080 0v820M1200 0v820M1320 0v820"/>
+  </g>
+  <text x="70" y="88" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="44" font-weight="800">Public trigger, private automation</text>
+  <text x="72" y="128" fill="#cbd5e1" font-family="Inter, Arial, sans-serif" font-size="20">Expose a narrow gateway, not the n8n instance.</text>
+
+  <g transform="translate(70 220)">
+    <rect width="260" height="310" rx="28" fill="#0f172a" stroke="#334155" stroke-width="2"/>
+    <text x="32" y="58" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="800">External SaaS</text>
+    <text x="32" y="92" fill="#94a3b8" font-family="JetBrains Mono, monospace" font-size="16">Slack / GChat / GitHub</text>
+    <circle cx="75" cy="166" r="34" fill="#1e293b" stroke="#38bdf8" stroke-width="3"/>
+    <circle cx="132" cy="166" r="34" fill="#1e293b" stroke="#818cf8" stroke-width="3"/>
+    <circle cx="189" cy="166" r="34" fill="#1e293b" stroke="#22c55e" stroke-width="3"/>
+    <text x="62" y="174" fill="#dbeafe" font-family="JetBrains Mono, monospace" font-size="20">S</text>
+    <text x="119" y="174" fill="#ede9fe" font-family="JetBrains Mono, monospace" font-size="20">G</text>
+    <text x="176" y="174" fill="#dcfce7" font-family="JetBrains Mono, monospace" font-size="20">A</text>
+    <text x="32" y="258" fill="#cbd5e1" font-family="Inter, Arial, sans-serif" font-size="17">Needs a public webhook URL.</text>
+  </g>
+
+  <g transform="translate(420 250)">
+    <rect width="250" height="250" rx="28" fill="#0b1220" stroke="#38bdf8" stroke-width="2" filter="url(#glow)"/>
+    <path d="M72 96h106v58c0 45-53 76-53 76s-53-31-53-76z" fill="url(#blue)" opacity=".22" stroke="#38bdf8" stroke-width="4"/>
+    <text x="52" y="60" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="800">Cloudflare</text>
+    <text x="77" y="184" fill="#dbeafe" font-family="JetBrains Mono, monospace" font-size="22">WAF + TLS</text>
+  </g>
+
+  <g transform="translate(780 190)">
+    <rect width="310" height="370" rx="30" fill="#101827" stroke="#818cf8" stroke-width="2" filter="url(#glow)"/>
+    <text x="34" y="62" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800">Gateway</text>
+    <text x="34" y="98" fill="#cbd5e1" font-family="JetBrains Mono, monospace" font-size="16">/{slug}/webhook</text>
+    <g fill="none" stroke-linecap="round" stroke-width="3">
+      <path stroke="#38bdf8" d="M44 150h222"/>
+      <path stroke="#a855f7" d="M44 210h222"/>
+      <path stroke="#22c55e" d="M44 270h222"/>
+    </g>
+    <text x="50" y="140" fill="#e0f2fe" font-family="Inter, Arial, sans-serif" font-size="18">Validate signature</text>
+    <text x="50" y="200" fill="#ede9fe" font-family="Inter, Arial, sans-serif" font-size="18">Route by slug/channel</text>
+    <text x="50" y="260" fill="#dcfce7" font-family="Inter, Arial, sans-serif" font-size="18">Sign + log delivery</text>
+    <text x="34" y="330" fill="#94a3b8" font-family="Inter, Arial, sans-serif" font-size="16">FastAPI, SQLite, audit trail</text>
+  </g>
+
+  <g transform="translate(1190 220)">
+    <rect width="180" height="310" rx="28" fill="#07130d" stroke="#22c55e" stroke-width="2" filter="url(#glow)"/>
+    <text x="35" y="62" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="800">Private</text>
+    <text x="38" y="96" fill="#bbf7d0" font-family="JetBrains Mono, monospace" font-size="18">n8n</text>
+    <path d="M48 160h84M48 200h84M48 240h84" stroke="#22c55e" stroke-width="8" stroke-linecap="round"/>
+    <text x="32" y="284" fill="#cbd5e1" font-family="Inter, Arial, sans-serif" font-size="16">Internal workflows</text>
+  </g>
+
+  <g fill="none" stroke-linecap="round" stroke-width="6">
+    <path stroke="url(#blue)" d="M330 375h90"/>
+    <path stroke="url(#violet)" d="M670 375h110"/>
+    <path stroke="url(#green)" d="M1090 375h100"/>
+  </g>
+  <g fill="#38bdf8"><path d="m414 358 28 17-28 17z"/></g>
+  <g fill="#818cf8"><path d="m774 358 28 17-28 17z"/></g>
+  <g fill="#22c55e"><path d="m1184 358 28 17-28 17z"/></g>
+  <text x="505" y="666" fill="#e2e8f0" font-family="JetBrains Mono, monospace" font-size="18">Internet ingress stops at the gate. n8n remains internal.</text>
+</svg>

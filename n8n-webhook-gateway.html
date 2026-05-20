@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="How I built a secure webhook gateway for private n8n workflows.">
+<meta name="keywords" content="n8n, webhook, gateway, Cloudflare, WAF, Slack, FastAPI, Kubernetes">
+<meta name="author" content="Thi">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<title>Building a Secure Webhook Gateway for Private n8n</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+</head>
+
+<body class="tech-article-page">
+<a class="skip-link" href="#article">Skip to article</a>
+
+<header class="site-header">
+     <nav class="site-nav" aria-label="Primary navigation">
+          <a class="brand" href="index.html">Thi</a>
+          <div class="nav-links">
+               <a href="index.html#posts">Posts</a>
+               <a href="index.html#topics">Topics</a>
+               <a href="index.html#about">About</a>
+               <a href="https://dinhdobathi.com">CV</a>
+          </div>
+     </nav>
+</header>
+
+<main id="article">
+     <section class="article-hero">
+          <div class="article-hero-grid article-diagram-hero-grid">
+               <div>
+                    <div class="article-kicker">Automation / Security / n8n</div>
+                    <h1>Building a Secure Webhook Gateway for Private n8n</h1>
+                    <p class="article-deck">How I kept internal n8n workflows private while still letting Slack, Google Chat, and other public event sources trigger automation through a small Cloudflare-protected gate.</p>
+                    <div class="article-meta-row">
+                         <span class="article-pill">May 20, 2026</span>
+                         <span class="article-pill">8 min read</span>
+                         <span class="article-pill">FastAPI + Kubernetes</span>
+                    </div>
+               </div>
+
+               <aside class="article-hero-card article-hero-diagram-card" aria-label="Article summary">
+                    <img src="images/n8n-gateway-architecture.svg" alt="n8n webhook gateway architecture visual">
+                    <div>
+                         <strong>Core idea</strong>
+                         <span>Do not expose n8n. Expose a narrow, auditable gateway.</span>
+                    </div>
+               </aside>
+          </div>
+     </section>
+
+     <div class="article-shell">
+          <aside class="article-sidebar" aria-label="Article navigation">
+               <div class="article-author">
+                    <img src="images/thi-profile.jpg" alt="Thi">
+                    <strong>Thi</strong>
+                    <p>DevOps, cloud infrastructure, automation, and internal platform notes.</p>
+               </div>
+               <nav class="article-toc">
+                    <strong>In this post</strong>
+                    <a href="#problem">The problem</a>
+                    <a href="#gateway">Gateway design</a>
+                    <a href="#screenshots">Screenshots</a>
+                    <a href="#routing">Routing</a>
+                    <a href="#validation">Validation</a>
+                    <a href="#security">Security controls</a>
+                    <a href="#tradeoffs">Tradeoffs</a>
+                    <a href="#lessons">What I learned</a>
+               </nav>
+          </aside>
+
+          <article class="article-content">
+               <section id="problem" class="article-section">
+                    <h2>The problem</h2>
+                    <div class="article-logo-row">
+                         <img src="images/n8n-gateway-logo.svg" alt="n8n Webhook Gateway logo">
+                         <span>Public SaaS events enter through a small validation gate. Internal n8n stays private.</span>
+                    </div>
+                    <p>I installed <code>n8n</code> inside an organization environment. It is useful because it can connect to internal databases, internal systems, and private services. That is also exactly why it should not be exposed directly to the internet.</p>
+                    <p>The security model was clear: egress is normal, ingress is restricted. n8n can call third-party systems, but third-party systems cannot call n8n. No public n8n API, no public webhook trigger, no public application trigger.</p>
+                    <p>That worked until more workflows needed to start from Slack chat, Slack calls, Google Chat, or other external events. These tools are designed to send a request to a public URL. My n8n instance was intentionally private.</p>
+                    <div class="article-callout">
+                         <p><strong>The real requirement:</strong> expose a small, controlled webhook surface, not the whole n8n system.</p>
+                    </div>
+                    <p>The first idea is always easy: put a public proxy in front of n8n and forward <code>/webhook/*</code>. Technically, that works. But it moves the risk instead of solving it.</p>
+                    <p>A webhook endpoint still needs to answer hard questions before forwarding anything:</p>
+                    <ul>
+                         <li>Is this request really from Slack, Google Chat, Telegram, GitHub, or someone replaying a curl command?</li>
+                         <li>Which internal n8n workflow should receive it?</li>
+                         <li>Should this Slack channel trigger this workflow, or should it be dropped?</li>
+                         <li>How do I know whether forwarding succeeded?</li>
+                         <li>Can an attacker use this public endpoint to reach private IPs or cloud metadata endpoints?</li>
+                         <li>Where should admin UI access live if the public URL must be webhook-only?</li>
+                    </ul>
+                    <p>At that point the component is no longer a proxy. It is a gate.</p>
+               </section>
+
+               <section id="gateway" class="article-section">
+                    <h2>The gateway design</h2>
+                    <img class="article-inline-image article-diagram-image" src="images/n8n-gateway-architecture.svg" alt="n8n webhook gateway flow from SaaS through Cloudflare to private n8n">
+                    <p>I built <code>n8n-webhook-gateway</code> as a small FastAPI application. It exposes stable public webhook URLs, validates inbound requests, routes them to the correct internal n8n destination, and records each delivery attempt.</p>
+                    <div class="article-diagram">Slack / GChat / Partner Webhooks
+          |
+          v
+Cloudflare DNS + WAF + TLS
+          |
+          v
+n8n Webhook Gateway
+  - route lookup by slug
+  - provider signature validation
+  - channel-based routing
+  - rate limit + body size limit
+  - delivery logging
+  - outbound HMAC + auth header injection
+          |
+          v
+Private n8n Webhook URL
+          |
+          v
+Internal workflow, DB, and systems</div>
+                    <p>The public URL is something like:</p>
+                    <pre class="article-code">https://gateway.example.com/platform-alerts/webhook</pre>
+                    <p>The destination can stay private:</p>
+                    <pre class="article-code">https://n8n.internal.example/webhook/real-workflow-id</pre>
+                    <p>External systems only know the gateway URL. n8n remains internal.</p>
+               </section>
+
+               <section id="screenshots" class="article-section">
+                    <h2>Product screenshots</h2>
+                    <p>The gateway also has a small admin UI. It is intentionally operational: route table first, quick copy buttons, clear status badges, and enough detail to debug delivery without opening the database.</p>
+
+                    <figure class="article-screenshot">
+                         <img src="images/n8n-screenshot-login.png" alt="n8n Webhook Gateway login screen">
+                         <figcaption>Login page with dark theme, centered credentials card, and yellow sign-in action.</figcaption>
+                    </figure>
+
+                    <figure class="article-screenshot">
+                         <img src="images/n8n-screenshot-dashboard.png" alt="n8n Webhook Gateway routes dashboard">
+                         <figcaption>Dashboard showing routes, source type, n8n destination, active status, generated webhook URL, copy action, and route controls.</figcaption>
+                    </figure>
+
+                    <div class="article-screenshot-grid">
+                         <figure class="article-screenshot">
+                              <img src="images/n8n-screenshot-new-route.png" alt="n8n Webhook Gateway create route form top">
+                              <figcaption>Create route form: slug, n8n webhook URL, workflow URL, and description.</figcaption>
+                         </figure>
+                         <figure class="article-screenshot">
+                              <img src="images/n8n-screenshot-new-route-bottom.png" alt="n8n Webhook Gateway create route verification section">
+                              <figcaption>Verification settings: source type, signing secret, channel ID, destination auth, and create action.</figcaption>
+                         </figure>
+                    </div>
+
+                    <figure class="article-screenshot">
+                         <img src="images/n8n-screenshot-route-detail.png" alt="n8n Webhook Gateway route detail page">
+                         <figcaption>Route detail view with status, source type, private n8n destination, public webhook URL, and test webhook panel.</figcaption>
+                    </figure>
+
+                    <figure class="article-screenshot">
+                         <img src="images/n8n-screenshot-delivery-log.png" alt="n8n Webhook Gateway delivery log table">
+                         <figcaption>Delivery log table showing request time, method, status, response code, and latency for each delivery attempt.</figcaption>
+                    </figure>
+
+                    <figure class="article-screenshot">
+                         <img src="images/n8n-screenshot-edit-route.png" alt="n8n Webhook Gateway edit route form">
+                         <figcaption>Edit route form with pre-filled fields and locked source type to avoid changing validation semantics after creation.</figcaption>
+                    </figure>
+               </section>
+
+               <section id="routing" class="article-section">
+                    <h2>Routing model</h2>
+                    <p>Each route has a stable slug. The gateway stores the real destination URL behind it. If the n8n workflow changes later, I update the route in the gateway instead of changing every Slack app or third-party integration.</p>
+                    <div class="article-table">
+                         <table>
+                              <thead>
+                                   <tr>
+                                        <th>Field</th>
+                                        <th>Purpose</th>
+                                   </tr>
+                              </thead>
+                              <tbody>
+                                   <tr>
+                                        <td><code>slug</code></td>
+                                        <td>Stable public path, for example <code>platform-alerts</code></td>
+                                   </tr>
+                                   <tr>
+                                        <td><code>destination_url</code></td>
+                                        <td>Internal n8n webhook URL</td>
+                                   </tr>
+                                   <tr>
+                                        <td><code>source_type</code></td>
+                                        <td><code>slack</code>, <code>gchat</code>, or <code>generic</code></td>
+                                   </tr>
+                                   <tr>
+                                        <td><code>signing_secret</code></td>
+                                        <td>Used to validate source request or sign gateway-to-n8n payload</td>
+                                   </tr>
+                                   <tr>
+                                        <td><code>auth_header</code></td>
+                                        <td>Optional auth header injected when forwarding to n8n</td>
+                                   </tr>
+                              </tbody>
+                         </table>
+                    </div>
+                    <p>The inbound endpoint is intentionally simple:</p>
+                    <pre class="article-code">ANY /{slug}/webhook</pre>
+                    <p>The management API and UI are not part of that public contract. They live under an admin path and can be restricted internally.</p>
+               </section>
+
+               <section id="validation" class="article-section">
+                    <h2>Request validation</h2>
+                    <img class="article-inline-image article-diagram-image" src="images/n8n-gateway-validation.svg" alt="n8n gateway validation pipeline">
+                    <p>This is the part that makes it a gateway instead of a forwarder.</p>
+                    <p>For Slack, the gateway validates <code>X-Slack-Signature</code> and <code>X-Slack-Request-Timestamp</code> with the route's Slack signing secret. It also handles Slack URL verification challenges, so the Slack app can be registered against the gateway URL.</p>
+                    <p>For Google Chat, it verifies the bearer JWT using Google's public certificates and the expected audience.</p>
+                    <p>For generic providers, it can validate a configured secret header. That works well for providers such as Telegram or internal partner systems where a shared secret header is enough.</p>
+                    <p>Only after validation does the gateway forward the request to n8n.</p>
+
+                    <h3>Channel-based routing</h3>
+                    <p>One useful feature came from the Slack use case. A single Slack app can receive events from multiple channels, but not every channel should trigger the same workflow.</p>
+                    <pre class="article-code">Slack route: platform-bot
+  channel C0123... -> n8n workflow A
+  channel C0456... -> n8n workflow B
+  unknown channel  -> dropped</pre>
+                    <p>This keeps Slack automation manageable without creating a new public endpoint for every workflow.</p>
+
+                    <h3>Forwarding with audit trail</h3>
+                    <p>Every forwarded request gets gateway headers:</p>
+                    <ul>
+                         <li><code>X-Gateway-Route</code> - route slug</li>
+                         <li><code>X-Gateway-Delivery-Id</code> - generated delivery UUID</li>
+                         <li><code>X-Gateway-Timestamp</code> - unix timestamp</li>
+                         <li><code>X-Gateway-Signature</code> - HMAC of the forwarded body when a signing secret is configured</li>
+                    </ul>
+                    <p>The gateway retries on <code>5xx</code> responses and timeouts with exponential backoff. It also logs delivery status, response code, attempt count, latency, response excerpt, and error message.</p>
+                    <p>When Slack says it sent an event but n8n did not behave as expected, I can check the delivery log and see whether the problem was validation, routing, n8n response, timeout, or a downstream workflow issue.</p>
+               </section>
+
+               <section id="security" class="article-section">
+                    <h2>Security controls</h2>
+                    <img class="article-inline-image article-diagram-image" src="images/n8n-gateway-security.svg" alt="n8n gateway security layers">
+                    <p>Because the gateway is public, it needs boring but important protections:</p>
+                    <ul>
+                         <li>Secrets are encrypted at rest with a dedicated encryption key.</li>
+                         <li>JWT signing key and field encryption key are separated.</li>
+                         <li>Startup fails if production secrets are weak defaults.</li>
+                         <li>Inbound webhook rate limits are applied per route and client.</li>
+                         <li>Request body size is capped.</li>
+                         <li>Private destination IPs are blocked by default to reduce SSRF risk.</li>
+                         <li>Allowed internal destinations must be explicitly configured.</li>
+                         <li>Session cookies are httpOnly and can be forced Secure behind HTTPS.</li>
+                         <li>The container runs as non-root with Linux capabilities dropped.</li>
+                    </ul>
+                    <p>The SSRF protection is especially important. A gateway that can reach internal services must not become a public tunnel to every internal IP. The default behavior blocks private and link-local addresses. For the real n8n destination, I allow only the expected internal hostnames.</p>
+
+                    <h3>Cloudflare and admin separation</h3>
+                    <p>I put the gateway behind Cloudflare WAF. Cloudflare handles the edge layer: DNS, TLS, WAF rules, and public traffic filtering. The application still validates the request itself, because WAF rules should not be the only security boundary for signed webhooks.</p>
+                    <p>The public surface is only:</p>
+                    <pre class="article-code">/{slug}/webhook
+/health</pre>
+                    <p>The admin UI and route management API live under an internal admin path. In production, that can be restricted by Cloudflare WAF, ingress rules, VPN, or an internal-only hostname.</p>
+               </section>
+
+               <section id="tradeoffs" class="article-section">
+                    <h2>Tradeoffs</h2>
+                    <p>I kept the first production version intentionally small. SQLite is enough for a single-replica gateway and a small number of routes. It also keeps deployment simple because there is no external database dependency.</p>
+                    <p>The tradeoff is scaling. SQLite and in-memory rate limiting are not ideal for multiple replicas. If traffic grows, the next step is PostgreSQL for route and delivery storage, Redis for shared rate limiting, and a queue for async delivery.</p>
+                    <div class="article-table">
+                         <table>
+                              <thead>
+                                   <tr>
+                                        <th>Layer</th>
+                                        <th>Technology</th>
+                                   </tr>
+                              </thead>
+                              <tbody>
+                                   <tr>
+                                        <td>Backend</td>
+                                        <td>Python 3.12, FastAPI, httpx</td>
+                                   </tr>
+                                   <tr>
+                                        <td>Data</td>
+                                        <td>SQLAlchemy async, SQLite</td>
+                                   </tr>
+                                   <tr>
+                                        <td>Auth</td>
+                                        <td>bcrypt, JWT cookie auth</td>
+                                   </tr>
+                                   <tr>
+                                        <td>Frontend</td>
+                                        <td>React, Vite, TypeScript</td>
+                                   </tr>
+                                   <tr>
+                                        <td>Deployment</td>
+                                        <td>Docker, Kubernetes, Cloudflare WAF</td>
+                                   </tr>
+                              </tbody>
+                         </table>
+                    </div>
+                    <p>For now, the gateway solves the main problem with minimal moving parts: public events can trigger internal n8n workflows without exposing n8n itself.</p>
+               </section>
+
+               <section id="lessons" class="article-section">
+                    <h2>What I learned</h2>
+                    <p>Private automation does not mean it cannot integrate with public SaaS tools. It means the boundary needs to be designed deliberately.</p>
+                    <blockquote class="article-quote">Do not make n8n public. Make a small, auditable, provider-aware gateway public.</blockquote>
+                    <p>That gave me a clean split. n8n stays powerful and private. The gateway becomes the controlled edge: validate, route, sign, log, and only then forward.</p>
+
+                    <h3>Next improvements</h3>
+                    <ul>
+                         <li>Add retention cleanup for delivery logs.</li>
+                         <li>Add Prometheus metrics for request count, latency, retry count, and failure rate.</li>
+                         <li>Add replay for failed deliveries.</li>
+                         <li>Move to PostgreSQL if I need multiple replicas.</li>
+                         <li>Add more first-class provider verifiers such as GitHub HMAC.</li>
+                    </ul>
+                    <p>But the core story is already useful: when ingress to automation is not allowed, do not punch a large hole. Build a narrow gate and make that gate responsible for trust.</p>
+               </section>
+          </article>
+     </div>
+</main>
+
+<footer class="site-footer">
+     <p>Copyright &copy; 2026 DinhDoBaThi</p>
+     <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="index.html#posts">Posts</a>
+          <a href="contact.html">Contact</a>
+     </div>
+</footer>
+</body>
+</html>

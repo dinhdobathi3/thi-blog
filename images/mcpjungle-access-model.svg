@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="780" viewBox="0 0 1440 780" role="img" aria-labelledby="title desc">
+  <title id="title">MCPJungle Group Access Model</title>
+  <desc id="desc">A user can have an explicit allow-list, inherit a group allow-list, or fall back to wildcard access in development mode.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1440" y1="0" y2="780" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#020617"/>
+      <stop offset=".5" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#172554"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" x2="1">
+      <stop stop-color="#38bdf8"/>
+      <stop offset="1" stop-color="#a855f7"/>
+    </linearGradient>
+    <linearGradient id="green" x1="0" x2="1">
+      <stop stop-color="#22c55e"/>
+      <stop offset="1" stop-color="#84cc16"/>
+    </linearGradient>
+  </defs>
+  <rect width="1440" height="780" fill="url(#bg)"/>
+  <g opacity=".28" stroke="#38bdf8" stroke-width="1">
+    <path d="M0 120h1440M0 240h1440M0 360h1440M0 480h1440M0 600h1440M0 720h1440"/>
+    <path d="M160 0v780M320 0v780M480 0v780M640 0v780M800 0v780M960 0v780M1120 0v780M1280 0v780"/>
+  </g>
+  <text x="78" y="88" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="44" font-weight="800">Allow-list resolution</text>
+  <text x="80" y="128" fill="#cbd5e1" font-family="Inter, Arial, sans-serif" font-size="20">Simple priority rules keep enterprise access explainable.</text>
+
+  <g transform="translate(120 240)">
+    <rect width="300" height="250" rx="28" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+    <text x="34" y="58" fill="#38bdf8" font-family="JetBrains Mono, monospace" font-size="17">priority 1</text>
+    <text x="34" y="104" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800">User override</text>
+    <text x="34" y="150" fill="#cbd5e1" font-family="Inter, Arial, sans-serif" font-size="17">Admin sets explicit access</text>
+    <rect x="34" y="182" width="205" height="40" rx="12" fill="#020617" stroke="#38bdf8" stroke-width="2"/>
+    <text x="52" y="208" fill="#dbeafe" font-family="JetBrains Mono, monospace" font-size="15">github, context7</text>
+  </g>
+  <g transform="translate(570 240)">
+    <rect width="300" height="250" rx="28" fill="#0f172a" stroke="#a855f7" stroke-width="2"/>
+    <text x="34" y="58" fill="#a855f7" font-family="JetBrains Mono, monospace" font-size="17">priority 2</text>
+    <text x="34" y="104" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800">Group default</text>
+    <text x="34" y="150" fill="#cbd5e1" font-family="Inter, Arial, sans-serif" font-size="17">Inherited by members</text>
+    <rect x="34" y="182" width="196" height="40" rx="12" fill="#020617" stroke="#a855f7" stroke-width="2"/>
+    <text x="52" y="208" fill="#ede9fe" font-family="JetBrains Mono, monospace" font-size="15">postgres, docs</text>
+  </g>
+  <g transform="translate(1020 240)">
+    <rect width="300" height="250" rx="28" fill="#0f172a" stroke="#22c55e" stroke-width="2"/>
+    <text x="34" y="58" fill="#22c55e" font-family="JetBrains Mono, monospace" font-size="17">priority 3</text>
+    <text x="34" y="104" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800">Wildcard</text>
+    <text x="34" y="150" fill="#cbd5e1" font-family="Inter, Arial, sans-serif" font-size="17">Local/dev fallback</text>
+    <rect x="34" y="182" width="92" height="40" rx="12" fill="#020617" stroke="#22c55e" stroke-width="2"/>
+    <text x="62" y="208" fill="#dcfce7" font-family="JetBrains Mono, monospace" font-size="15">["*"]</text>
+  </g>
+  <g fill="none" stroke-linecap="round" stroke-width="6">
+    <path stroke="url(#accent)" d="M420 365h150"/>
+    <path stroke="url(#green)" d="M870 365h150"/>
+  </g>
+  <path fill="#38bdf8" d="m558 348 29 17-29 17z"/>
+  <path fill="#22c55e" d="m1008 348 29 17-29 17z"/>
+  <rect x="352" y="590" width="736" height="82" rx="20" fill="#020617" stroke="#38bdf8" stroke-opacity=".34" stroke-width="2"/>
+  <text x="398" y="641" fill="#dbeafe" font-family="JetBrains Mono, monospace" font-size="22">explicit user list &gt; inherited group list &gt; wildcard</text>
+</svg>

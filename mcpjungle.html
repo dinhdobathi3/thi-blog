@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="How MCPJungle became a single gateway for MCP servers across Claude, Cursor, Codex, and team agents.">
+<meta name="keywords" content="MCPJungle, MCP, Model Context Protocol, Claude, Cursor, Codex, AI tooling, Go, React">
+<meta name="author" content="Thi">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<title>MCPJungle: One Gateway for All My MCP Servers</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+</head>
+
+<body class="tech-article-page">
+<a class="skip-link" href="#article">Skip to article</a>
+
+<header class="site-header">
+     <nav class="site-nav" aria-label="Primary navigation">
+          <a class="brand" href="index.html">Thi</a>
+          <div class="nav-links">
+               <a href="index.html#posts">Posts</a>
+               <a href="index.html#topics">Topics</a>
+               <a href="index.html#about">About</a>
+               <a href="https://dinhdobathi.com">CV</a>
+          </div>
+     </nav>
+</header>
+
+<main id="article">
+     <section class="article-hero">
+          <div class="article-hero-grid article-diagram-hero-grid">
+               <div>
+                    <div class="article-kicker">AI Tooling / MCP / Platform</div>
+                    <h1>MCPJungle: One Gateway for All My MCP Servers</h1>
+                    <p class="article-deck">How I moved from scattered MCP configs in every AI client to a self-hosted control plane with one endpoint, a dashboard, access control, and group-based tool governance.</p>
+                    <div class="article-meta-row">
+                         <span class="article-pill">May 20, 2026</span>
+                         <span class="article-pill">9 min read</span>
+                         <span class="article-pill">Go + React + MCP</span>
+                    </div>
+               </div>
+
+               <aside class="article-hero-card article-hero-diagram-card" aria-label="Article summary">
+                    <img src="images/mcpjungle-architecture-cyber.svg" alt="MCPJungle unified gateway architecture visual">
+                    <div>
+                         <strong>Core idea</strong>
+                         <span>Register MCP servers once. Let every AI client connect to one governed endpoint.</span>
+                    </div>
+               </aside>
+          </div>
+     </section>
+
+     <div class="article-shell">
+          <aside class="article-sidebar" aria-label="Article navigation">
+               <div class="article-author">
+                    <img src="images/thi-profile.jpg" alt="Thi">
+                    <strong>Thi</strong>
+                    <p>DevOps, cloud infrastructure, automation, and internal platform notes.</p>
+               </div>
+               <nav class="article-toc">
+                    <strong>In this post</strong>
+                    <a href="#problem">The problem</a>
+                    <a href="#gateway">Gateway model</a>
+                    <a href="#dashboard">Dashboard</a>
+                    <a href="#groups">Groups</a>
+                    <a href="#security">Security</a>
+                    <a href="#stack">Stack</a>
+                    <a href="#lessons">What I learned</a>
+               </nav>
+          </aside>
+
+          <article class="article-content">
+               <section id="problem" class="article-section">
+                    <h2>The problem</h2>
+                    <div class="article-logo-row">
+                         <img src="images/mcpjungle-logo.png" alt="MCPJungle logo">
+                         <span>Self-hosted MCP control plane for Claude, Cursor, Codex, Copilot, and custom agents.</span>
+                    </div>
+                    <p>Once I started using more AI clients, MCP configuration became messy very quickly. Claude Desktop had one config. Cursor had another. Codex had its own MCP setup. Every new server meant more duplicated JSON, more local paths, more tokens, and more chance that one client behaved differently from the others.</p>
+                    <p>MCP is powerful because it gives AI clients access to real tools, prompts, and resources. But without a control point, the setup spreads everywhere. Filesystem, GitHub, documentation, browser, database, and internal tools all become separate entries copied into separate clients.</p>
+                    <div class="article-callout">
+                         <p><strong>The real requirement:</strong> one MCP endpoint that every client can use, with server registration and access control managed in one place.</p>
+                    </div>
+                    <p>I wanted something that works locally for my own machine, but can also grow into shared infrastructure for a team. Local mode should be simple. Enterprise mode should have users, tokens, groups, and observability.</p>
+                    <p>That is the story behind MCPJungle.</p>
+               </section>
+
+               <section id="gateway" class="article-section">
+                    <h2>Gateway model</h2>
+                    <p>MCPJungle is a self-hosted MCP gateway and registry. Instead of wiring every upstream MCP server directly into every AI client, I register servers once in MCPJungle. Claude, Cursor, Codex, Copilot, or a custom agent connects to one endpoint.</p>
+                    <img class="article-inline-image article-diagram-image" src="images/mcpjungle-architecture-cyber.svg" alt="MCPJungle architecture diagram">
+                    <div class="article-diagram">Claude / Cursor / Codex / Agents
+          |
+          v
+MCPJungle /mcp
+  - server registry
+  - tool discovery
+  - prompt and resource proxy
+  - access control
+  - token and group policies
+          |
+          v
+Upstream MCP servers
+  - stdio
+  - streamable HTTP
+  - SSE</div>
+                    <p>The mental model is simple:</p>
+                    <ul>
+                         <li><strong>Upstream servers</strong> expose the actual capabilities.</li>
+                         <li><strong>MCPJungle</strong> is the control plane and unified gateway.</li>
+                         <li><strong>AI clients</strong> consume one endpoint instead of many server configs.</li>
+                    </ul>
+                    <p>That changes the operational shape. Adding a new MCP server becomes a registry operation, not a copy-paste operation across every AI client.</p>
+                    <img class="article-inline-image article-diagram-image" src="images/mcpjungle-routing-pipeline.svg" alt="MCPJungle tool invocation pipeline">
+                    <pre class="article-code">mcpjungle register --name context7 --url https://mcp.context7.com/mcp</pre>
+                    <p>Then the client config can stay stable:</p>
+                    <pre class="article-code">{
+  "mcpServers": {
+    "mcpjungle": {
+      "command": "npx",
+      "args": ["mcp-remote", "http://localhost:8080/mcp", "--allow-http"]
+    }
+  }
+}</pre>
+               </section>
+
+               <section id="dashboard" class="article-section">
+                    <h2>Dashboard</h2>
+                    <p>The CLI is useful, but a gateway also needs visibility. I added an embedded React dashboard at <code>/ui</code> so the system is inspectable without jumping through terminal commands every time.</p>
+                    <img class="article-inline-image" src="images/mcpjungle-dashboard.png" alt="MCPJungle management dashboard">
+                    <p>The dashboard gives me pages for servers, tools, tool groups, clients, users, groups, and settings. It is not just a pretty wrapper. It makes the gateway understandable when there are many servers and many exposed tools.</p>
+                    <p>One practical page is the settings view. It gives client config snippets so connecting Claude, Cursor, or another tool is less error-prone.</p>
+                    <img class="article-inline-image" src="images/mcpjungle-settings-connect.png" alt="MCPJungle settings page with IDE connection snippets">
+                    <p>This matters because AI tooling often fails from tiny config mistakes: wrong URL, stale token, missing header, wrong transport. A dashboard turns those details into explicit system state.</p>
+               </section>
+
+               <section id="groups" class="article-section">
+                    <h2>Groups</h2>
+                    <p>The big feature in my fork is group management. Upstream MCPJungle already provides the gateway foundation. My fork adds a management layer for teams: admins can create groups, assign users, and define server allow-lists at the group level.</p>
+                    <img class="article-inline-image article-diagram-image" src="images/mcpjungle-access-model.svg" alt="MCPJungle group access resolution model">
+                    <img class="article-inline-image" src="images/mcpjungle-groups.png" alt="MCPJungle groups management page">
+                    <p>The allow-list resolution is deliberately boring:</p>
+                    <pre class="article-code">1. User explicit allow-list
+2. Group allow-list
+3. Wildcard ["*"] fallback</pre>
+                    <p>This keeps the rules easy to explain. If an admin sets a user-specific allow-list, it wins. If not, the user inherits the group list. If neither exists, development mode can fall back to everything.</p>
+                    <div class="article-table">
+                         <table>
+                              <thead>
+                                   <tr>
+                                        <th>Identity</th>
+                                        <th>Purpose</th>
+                                   </tr>
+                              </thead>
+                              <tbody>
+                                   <tr>
+                                        <td>User</td>
+                                        <td>Human operator using the dashboard, CLI, or API</td>
+                                   </tr>
+                                   <tr>
+                                        <td>MCP client</td>
+                                        <td>Non-human identity for Claude, Cursor, Codex, or an agent</td>
+                                   </tr>
+                                   <tr>
+                                        <td>Group</td>
+                                        <td>Shared server allow-list inherited by member users</td>
+                                   </tr>
+                                   <tr>
+                                        <td>Tool group</td>
+                                        <td>Curated subset of tools exposed through a narrower MCP endpoint</td>
+                                   </tr>
+                              </tbody>
+                         </table>
+                    </div>
+                    <p>That split is important. A developer might belong to a <code>data-tools</code> group and receive access to Postgres and MongoDB MCP servers, while a frontend group gets documentation, browser, and design tools. The AI client only sees what the token is allowed to use.</p>
+               </section>
+
+               <section id="security" class="article-section">
+                    <h2>Security controls</h2>
+                    <img class="article-inline-image article-diagram-image" src="images/mcpjungle-governance-security.svg" alt="MCPJungle security layers">
+                    <p>An MCP gateway is sensitive infrastructure. It sits between AI agents and tools that can touch files, repos, services, and sometimes internal systems. So the gateway cannot just be a convenient proxy.</p>
+                    <p>The fork includes several hardening decisions:</p>
+                    <ul>
+                         <li><code>/init</code> is restricted to loopback by default, or requires an init token for remote setup.</li>
+                         <li><code>/clients/self/apply-config</code> is disabled by default and only enabled explicitly for local use.</li>
+                         <li>Stdio commands, args, and env values are redacted for non-admin API responses.</li>
+                         <li>Self-service client creation is scoped to the current user.</li>
+                         <li>Internal errors return generic messages while details stay in server logs.</li>
+                         <li>Enterprise mode requires bearer tokens and admin-gated management routes.</li>
+                    </ul>
+                    <p>Those controls are not glamorous, but they matter. A tool registry becomes part of the trust boundary. When agents can call tools, the control plane needs boring guardrails: identity, scope, redaction, and audit-friendly behavior.</p>
+                    <blockquote class="article-quote">MCP tooling should be easy to connect, but not easy to accidentally overexpose.</blockquote>
+               </section>
+
+               <section id="stack" class="article-section">
+                    <h2>Stack</h2>
+                    <p>MCPJungle is built as a small platform, not only a CLI wrapper. The backend is Go, with Gin for the HTTP API, GORM for persistence, Cobra for CLI commands, and mcp-go for protocol integration. The UI is React, TypeScript, Vite, Tailwind, React Router, and TanStack Query.</p>
+                    <div class="article-table">
+                         <table>
+                              <thead>
+                                   <tr>
+                                        <th>Layer</th>
+                                        <th>Technology</th>
+                                   </tr>
+                              </thead>
+                              <tbody>
+                                   <tr>
+                                        <td>Backend</td>
+                                        <td>Go 1.24, Gin, GORM, mcp-go, Cobra</td>
+                                   </tr>
+                                   <tr>
+                                        <td>Frontend</td>
+                                        <td>React 19, TypeScript, Vite, Tailwind CSS</td>
+                                   </tr>
+                                   <tr>
+                                        <td>Database</td>
+                                        <td>SQLite for local/dev, PostgreSQL for production</td>
+                                   </tr>
+                                   <tr>
+                                        <td>Observability</td>
+                                        <td>OpenTelemetry, Prometheus, zap logging</td>
+                                   </tr>
+                                   <tr>
+                                        <td>Deployment</td>
+                                        <td>Docker, distroless image, Helm chart, docker-compose</td>
+                                   </tr>
+                              </tbody>
+                         </table>
+                    </div>
+                    <p>The important part is that local and team usage share the same product shape. I can run SQLite locally with almost no ceremony, then deploy with PostgreSQL, tokens, and a Helm chart when the gateway becomes shared infrastructure.</p>
+                    <img class="article-inline-image" src="images/mcpjungle-claude-call-tool.png" alt="Claude calling a tool through MCPJungle">
+               </section>
+
+               <section id="lessons" class="article-section">
+                    <h2>What I learned</h2>
+                    <p>The lesson is similar to the n8n gateway story: when something becomes central to daily work, do not let every client manage its own copy of the truth.</p>
+                    <p>For MCP, the control point is the registry and gateway. Register servers once, expose a stable endpoint, scope access with tokens and groups, and make the system visible through a dashboard.</p>
+                    <h3>Next improvements</h3>
+                    <ul>
+                         <li>Better audit trail for tool invocations and admin changes.</li>
+                         <li>More polished Helm deployment defaults for team installs.</li>
+                         <li>Stronger dashboard flows for token rotation and config export.</li>
+                         <li>More granular per-tool policies beyond server allow-lists.</li>
+                         <li>More docs for AI agents consuming the MCPJungle docs endpoint directly.</li>
+                    </ul>
+                    <p>MCPJungle started as a way to clean up my local AI tool setup. It is becoming a small internal platform pattern: one endpoint, one registry, one place to govern what AI clients can actually touch.</p>
+               </section>
+          </article>
+     </div>
+</main>
+
+<footer class="site-footer">
+     <p>Copyright &copy; 2026 DinhDoBaThi</p>
+     <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="index.html#posts">Posts</a>
+          <a href="contact.html">Contact</a>
+     </div>
+</footer>
+</body>
+</html>

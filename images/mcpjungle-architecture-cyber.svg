@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="820" viewBox="0 0 1440 820" role="img" aria-labelledby="title desc">
+  <title id="title">MCPJungle Unified MCP Gateway Architecture</title>
+  <desc id="desc">Claude, Cursor, Codex, and agents connect to one MCPJungle gateway, which manages upstream MCP servers, tools, prompts, resources, access, and observability.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1440" y1="0" y2="820" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#020617"/>
+      <stop offset=".5" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0" x2="1">
+      <stop stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#3b82f6"/>
+    </linearGradient>
+    <linearGradient id="violet" x1="0" x2="1">
+      <stop stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#a855f7"/>
+    </linearGradient>
+    <linearGradient id="green" x1="0" x2="1">
+      <stop stop-color="#22c55e"/>
+      <stop offset="1" stop-color="#84cc16"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feColorMatrix in="blur" values="0 0 0 0 0.18 0 0 0 0 0.65 0 0 0 0 1 0 0 0 .52 0"/>
+      <feBlend in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <rect width="1440" height="820" fill="url(#bg)"/>
+  <g opacity=".32">
+    <path stroke="#38bdf8" stroke-width="1" d="M0 120h1440M0 240h1440M0 360h1440M0 480h1440M0 600h1440M0 720h1440"/>
+    <path stroke="#38bdf8" stroke-width="1" d="M120 0v820M240 0v820M360 0v820M480 0v820M600 0v820M720 0v820M840 0v820M960 0v820M1080 0v820M1200 0v820M1320 0v820"/>
+  </g>
+  <text x="70" y="88" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="44" font-weight="800">One endpoint for every AI client</text>
+  <text x="72" y="128" fill="#cbd5e1" font-family="Inter, Arial, sans-serif" font-size="20">Register MCP servers once. Govern discovery, access, and invocation centrally.</text>
+
+  <g transform="translate(70 205)">
+    <rect width="290" height="365" rx="30" fill="#0f172a" stroke="#334155" stroke-width="2"/>
+    <text x="34" y="62" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800">AI clients</text>
+    <text x="34" y="98" fill="#94a3b8" font-family="JetBrains Mono, monospace" font-size="16">one stable /mcp URL</text>
+    <g transform="translate(34 142)">
+      <rect width="220" height="44" rx="12" fill="#111827" stroke="#38bdf8" stroke-width="2"/>
+      <rect y="62" width="220" height="44" rx="12" fill="#111827" stroke="#818cf8" stroke-width="2"/>
+      <rect y="124" width="220" height="44" rx="12" fill="#111827" stroke="#22c55e" stroke-width="2"/>
+      <rect y="186" width="220" height="44" rx="12" fill="#111827" stroke="#f59e0b" stroke-width="2"/>
+      <text x="22" y="29" fill="#dbeafe" font-family="JetBrains Mono, monospace" font-size="18">Claude</text>
+      <text x="22" y="91" fill="#ede9fe" font-family="JetBrains Mono, monospace" font-size="18">Cursor</text>
+      <text x="22" y="153" fill="#dcfce7" font-family="JetBrains Mono, monospace" font-size="18">Codex</text>
+      <text x="22" y="215" fill="#fef3c7" font-family="JetBrains Mono, monospace" font-size="18">Agents</text>
+    </g>
+  </g>
+
+  <g transform="translate(520 165)" filter="url(#glow)">
+    <rect width="400" height="445" rx="34" fill="#101827" stroke="url(#violet)" stroke-width="3"/>
+    <circle cx="200" cy="130" r="78" fill="#111827" stroke="url(#cyan)" stroke-width="5"/>
+    <path d="M162 124h76M176 94h48M176 154h48M200 62v136" stroke="#38bdf8" stroke-linecap="round" stroke-width="9"/>
+    <text x="74" y="262" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800">MCPJungle</text>
+    <text x="78" y="302" fill="#cbd5e1" font-family="JetBrains Mono, monospace" font-size="17">gateway · registry · control plane</text>
+    <g transform="translate(48 342)">
+      <rect width="92" height="46" rx="13" fill="#020617" stroke="#38bdf8" stroke-width="2"/>
+      <rect x="110" width="92" height="46" rx="13" fill="#020617" stroke="#a855f7" stroke-width="2"/>
+      <rect x="220" width="92" height="46" rx="13" fill="#020617" stroke="#22c55e" stroke-width="2"/>
+      <text x="22" y="30" fill="#dbeafe" font-family="JetBrains Mono, monospace" font-size="14">tools</text>
+      <text x="127" y="30" fill="#ede9fe" font-family="JetBrains Mono, monospace" font-size="14">prompts</text>
+      <text x="232" y="30" fill="#dcfce7" font-family="JetBrains Mono, monospace" font-size="14">resources</text>
+    </g>
+  </g>
+
+  <g transform="translate(1080 205)">
+    <rect width="290" height="365" rx="30" fill="#07130d" stroke="#22c55e" stroke-width="2"/>
+    <text x="34" y="62" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800">Upstream MCP</text>
+    <text x="34" y="98" fill="#94a3b8" font-family="JetBrains Mono, monospace" font-size="16">registered once</text>
+    <g transform="translate(34 146)">
+      <rect width="220" height="54" rx="14" fill="#0f172a" stroke="#22c55e" stroke-width="2"/>
+      <rect y="74" width="220" height="54" rx="14" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+      <rect y="148" width="220" height="54" rx="14" fill="#0f172a" stroke="#a855f7" stroke-width="2"/>
+      <text x="22" y="34" fill="#dcfce7" font-family="JetBrains Mono, monospace" font-size="18">stdio</text>
+      <text x="22" y="108" fill="#dbeafe" font-family="JetBrains Mono, monospace" font-size="18">streamable HTTP</text>
+      <text x="22" y="182" fill="#ede9fe" font-family="JetBrains Mono, monospace" font-size="18">SSE</text>
+    </g>
+  </g>
+
+  <g fill="none" stroke-linecap="round" stroke-width="7">
+    <path stroke="url(#cyan)" d="M360 387h160"/>
+    <path stroke="url(#green)" d="M920 387h160"/>
+  </g>
+  <path fill="#38bdf8" d="m510 367 34 20-34 20z"/>
+  <path fill="#22c55e" d="m1070 367 34 20-34 20z"/>
+  <text x="524" y="690" fill="#e2e8f0" font-family="JetBrains Mono, monospace" font-size="18">The client config stops multiplying. The gateway becomes the source of truth.</text>
+</svg>
