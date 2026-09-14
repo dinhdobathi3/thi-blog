@@ -10,193 +10,199 @@
 
 <title>Thi - Personal Tech Blog</title>
 
-<link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" href="css/font-awesome.min.css">
-<link rel="stylesheet" href="css/style.css">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/nocturne.css">
+<style>
+html { scroll-behavior: smooth; }
+@media (max-width: 860px) {
+  #hero-grid, #about {
+    grid-template-columns: 1fr !important;
+  }
+  #stats-grid {
+    grid-template-columns: 1fr !important;
+    justify-content: start !important;
+  }
+}
+</style>
 </head>
-<body class="tech-blog-home">
+<body>
 <a class="skip-link" href="#main">Skip to main content</a>
 
-<header class="site-header">
-     <nav class="site-nav" aria-label="Primary navigation">
-          <a class="brand" href="index.html">Thi</a>
-          <div class="nav-links">
-               <a href="#posts">Posts</a>
-               <a href="#topics">Topics</a>
-               <a href="#about">About</a>
-               <a href="https://dinhdobathi.com">CV</a>
-          </div>
-     </nav>
-</header>
+<nav class="nav" aria-label="Primary navigation" style="position: sticky; top: 0; z-index: 20; backdrop-filter: blur(16px); background: color-mix(in srgb, var(--color-bg) 78%, transparent); padding-inline: max(var(--space-4), calc((100% - 1200px) / 2 + var(--space-4)));">
+  <a href="index.html" class="nav-brand gradtext" style="font-size: 18px;">Thi</a>
+  <a href="#posts">Posts</a>
+  <a href="#topics">Topics</a>
+  <a href="#about">About</a>
+  <a href="contact.html">Contact</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="https://dinhdobathi.com" class="btn btn-secondary">CV</a>
+</nav>
 
 <main id="main">
-     <section class="hero-panel image-hero" aria-labelledby="hero-title">
-          <div class="hero-content">
-               <div class="hero-kicker">Senior DevOps Engineer & SRE</div>
-               <h1 id="hero-title">Hi, I'm Thi.<br><span>Personal tech blog</span></h1>
-               <p class="hero-copy">Personal technical writing about Kubernetes, n8n automation, cloud infrastructure, security boundaries, and the small production decisions that matter.</p>
-               <div class="hero-actions">
-                    <a class="button-primary" href="#posts">Read posts</a>
-                    <a class="button-secondary" href="#about">About Thi</a>
-               </div>
-          </div>
-          <div class="hero-visual" aria-label="Featured article images">
-               <img class="hero-main-image" src="images/thi-profile.jpg" alt="Thi profile portrait">
-               <div class="hero-thumb-row">
-                    <img src="images/karpenter1.png" alt="Karpenter article preview">
-                    <img src="images/blog-image1.jpg" alt="Cluster API article preview">
-               </div>
-          </div>
-     </section>
+<div style="max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px,5vw,72px);">
 
-     <section class="summary-grid" aria-label="Blog summary">
-          <div>
-               <span class="metric">06</span>
-               <span class="metric-label">published posts</span>
-          </div>
-          <div>
-               <span class="metric">05</span>
-               <span class="metric-label">core topics</span>
-          </div>
-          <div>
-               <span class="metric">2017-2026</span>
-               <span class="metric-label">notes archive</span>
-          </div>
-     </section>
+  <section id="hero-grid" aria-labelledby="hero-title" style="padding: 72px 0 56px; display: grid; grid-template-columns: minmax(0,6fr) minmax(0,5fr); gap: var(--space-6); align-items: center;">
+    <div style="position:relative; overflow:hidden;">
+    <canvas id="hero-canvas" aria-hidden="true" style="position:absolute; inset: -15% -10%; width: 130%; height: 140%; z-index: 0; pointer-events: none; opacity: 0.4; mask-image: radial-gradient(closest-side, black 55%, transparent 100%); -webkit-mask-image: radial-gradient(closest-side, black 55%, transparent 100%);"></canvas>
+    <div style="position:relative; z-index:1;">
+      <span class="eyebrow">Senior DevOps Engineer &amp; SRE</span>
+      <h1 id="hero-title" style="font-size: clamp(40px, 6vw, 76px); line-height: 1.02; letter-spacing: -0.02em; margin: 0;">Hi, I'm <span class="gradtext">Thi.</span><br>Personal tech blog</h1>
+      <p style="font-size: 17px; line-height: 1.65; max-width: 52ch; color: color-mix(in srgb, var(--color-text) 82%, transparent); margin: var(--space-4) 0 0;">Personal technical writing about Kubernetes, n8n automation, cloud infrastructure, security boundaries, and the small production decisions that matter.</p>
+      <div style="display:flex; gap: var(--space-3); margin-top: var(--space-6); flex-wrap: wrap;">
+        <a href="#posts" class="btn btn-primary">Read posts</a>
+        <a href="#about" class="btn btn-ghost">About Thi</a>
+      </div>
+    </div>
+    </div>
+    <div style="position:relative; z-index:1; display:grid; gap: var(--space-3);" aria-label="Featured article images">
+      <figure class="lighten">
+        <img src="images/thi-profile.jpg" alt="Thi profile portrait" style="width:100%; aspect-ratio: 4/3; object-fit: cover; object-position: top; border-radius: 14px;">
+      </figure>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: var(--space-3);">
+        <figure class="lighten"><img src="images/karpenter1.png" alt="Karpenter article preview" style="width:100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 10px;"></figure>
+        <figure class="lighten"><img src="images/blog-image1.jpg" alt="Cluster API article preview" style="width:100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 10px;"></figure>
+      </div>
+    </div>
+  </section>
 
-     <section id="posts" class="content-section" aria-labelledby="posts-title">
-          <div class="section-heading">
-               <p class="eyebrow">Archive</p>
-               <h2 id="posts-title">All posts</h2>
-          </div>
+</div>
 
-          <div class="post-list">
-               <article class="post-card featured-post">
-                    <figure class="post-image">
-                         <a href="n8n-webhook-gateway.html"><img src="images/home-bg.jpg" alt="n8n gateway article preview"></a>
-                    </figure>
-                    <div class="post-meta">
-                         <time datetime="2026-05-20">May 20, 2026</time>
-                         <span>Automation</span>
-                    </div>
-                    <h3><a href="n8n-webhook-gateway.html">Building a Secure Webhook Gateway for Private n8n</a></h3>
-                    <p>How I kept n8n private while still letting Slack, Google Chat, and other public webhook sources trigger internal workflows through a small Cloudflare-protected gate.</p>
-                    <a class="read-link" href="n8n-webhook-gateway.html">Read article</a>
-               </article>
+<section aria-label="Blog, by the numbers" style="background: radial-gradient(900px 420px at 85% -40%, color-mix(in srgb, var(--color-section-glow) 70%, transparent), transparent 64%), var(--color-section); padding: 44px 0;">
+  <div id="stats-grid" style="max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px,5vw,72px); display:grid; grid-template-columns: repeat(3, auto); justify-content: space-between; gap: var(--space-6); flex-wrap: wrap;">
+    <div><p class="gradtext" style="font-size: clamp(32px,3.4vw,46px); margin:0;">06</p><p style="font-size:13px; letter-spacing:0.06em; text-transform:uppercase; color: color-mix(in srgb, var(--color-text) 70%, transparent); margin: var(--space-2) 0 0;">Published posts</p></div>
+    <div><p class="gradtext" style="font-size: clamp(32px,3.4vw,46px); margin:0;">05</p><p style="font-size:13px; letter-spacing:0.06em; text-transform:uppercase; color: color-mix(in srgb, var(--color-text) 70%, transparent); margin: var(--space-2) 0 0;">Core topics</p></div>
+    <div><p class="gradtext" style="font-size: clamp(32px,3.4vw,46px); margin:0;">2017&ndash;2026</p><p style="font-size:13px; letter-spacing:0.06em; text-transform:uppercase; color: color-mix(in srgb, var(--color-text) 70%, transparent); margin: var(--space-2) 0 0;">Notes archive</p></div>
+  </div>
+</section>
 
-               <article class="post-card">
-                    <figure class="post-image">
-                         <a href="mcpjungle.html"><img src="images/mcpjungle-dashboard.png" alt="MCPJungle dashboard article preview"></a>
-                    </figure>
-                    <div class="post-meta">
-                         <time datetime="2026-05-20">May 20, 2026</time>
-                         <span>AI Tooling</span>
-                    </div>
-                    <h3><a href="mcpjungle.html">MCPJungle: One Gateway for All My MCP Servers</a></h3>
-                    <p>How I moved from scattered MCP configs in Claude, Cursor, and Codex to one self-hosted gateway with dashboard, tokens, groups, and access control.</p>
-                    <a class="read-link" href="mcpjungle.html">Read article</a>
-               </article>
+<div style="max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px,5vw,72px);">
 
-               <article class="post-card">
-                    <figure class="post-image">
-                         <a href="karpenter.html"><img src="images/karpenter1.png" alt="Karpenter article preview"></a>
-                    </figure>
-                    <div class="post-meta">
-                         <time datetime="2023-03-03">Mar 3, 2023</time>
-                         <span>Kubernetes</span>
-                    </div>
-                    <h3><a href="karpenter.html">Karpenter with AWS EKS</a></h3>
-                    <p>Deploying and testing Karpenter on EKS, with notes on node provisioning, instance selection, and autoscaling behavior.</p>
-                    <a class="read-link" href="karpenter.html">Read article</a>
-               </article>
+  <section id="posts" aria-labelledby="posts-title" style="padding: 64px 0 40px;">
+    <span class="eyebrow">Archive</span>
+    <h2 id="posts-title" style="font-size: clamp(28px,3.4vw,40px); margin: 0 0 var(--space-6);">All posts</h2>
 
-               <article class="post-card">
-                    <figure class="post-image">
-                         <a href="create-and-manage-kubernetes-clusters-with-cluster-api-and-argocd.html"><img src="images/blog-image1.jpg" alt="Cluster API and ArgoCD article preview"></a>
-                    </figure>
-                    <div class="post-meta">
-                         <time datetime="2022-09-20">Sep 20, 2022</time>
-                         <span>GitOps</span>
-                    </div>
-                    <h3><a href="create-and-manage-kubernetes-clusters-with-cluster-api-and-argocd.html">Create and Manage Kubernetes Clusters with Cluster API and ArgoCD</a></h3>
-                    <p>A walkthrough of Cluster API and ArgoCD for managing Kubernetes clusters from a single declarative source.</p>
-                    <a class="read-link" href="create-and-manage-kubernetes-clusters-with-cluster-api-and-argocd.html">Read article</a>
-               </article>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-6);">
 
-               <article class="post-card">
-                    <figure class="post-image">
-                         <a href="helm-chart.html"><img src="images/blog-image2.jpg" alt="Helm article preview"></a>
-                    </figure>
-                    <div class="post-meta">
-                         <time datetime="2022-06-10">Jun 10, 2022</time>
-                         <span>Helm</span>
-                    </div>
-                    <h3><a href="helm-chart.html">Helm Library Charts and Helm Unit Test</a></h3>
-                    <p>Notes on building reusable Helm library chart templates and testing rendered manifests with helm-unittest.</p>
-                    <a class="read-link" href="helm-chart.html">Read article</a>
-               </article>
+      <article class="card elev-sm" style="display:flex; flex-direction:column; padding:0; overflow:hidden;">
+        <figure class="lighten"><img src="images/home-bg.jpg" alt="n8n gateway article preview" style="width:100%; aspect-ratio:16/10; object-fit:cover;"></figure>
+        <div style="padding: var(--space-4);">
+          <div class="card-kicker" style="display:flex; gap:var(--space-2); align-items:center;"><span>May 20, 2026</span><span class="tag tag-accent">Automation</span></div>
+          <h3 class="card-title" style="font-size:20px; margin: var(--space-2) 0;"><a href="n8n-webhook-gateway.html">Building a Secure Webhook Gateway for Private n8n</a></h3>
+          <p class="card-body">How I kept n8n private while still letting Slack, Google Chat, and other public webhook sources trigger internal workflows through a small Cloudflare-protected gate.</p>
+          <a href="n8n-webhook-gateway.html" style="display:inline-flex; align-items:center; gap:6px; margin-top:var(--space-3); font-size:14px;">Read article <svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg></a>
+        </div>
+      </article>
 
-               <article class="post-card">
-                    <figure class="post-image">
-                         <a href="k8s-multicluster-with-kind-and-cilium.html"><img src="images/blog-image5.jpg" alt="Kubernetes multicluster article preview"></a>
-                    </figure>
-                    <div class="post-meta">
-                         <time datetime="2017-05-30">May 30, 2017</time>
-                         <span>Networking</span>
-                    </div>
-                    <h3><a href="k8s-multicluster-with-kind-and-cilium.html">Kubernetes Multicluster with Kind and Cilium</a></h3>
-                    <p>Local multicluster Kubernetes notes using Kind and Cilium, focused on learning cluster connectivity patterns.</p>
-                    <a class="read-link" href="k8s-multicluster-with-kind-and-cilium.html">Read article</a>
-               </article>
-          </div>
-     </section>
+      <article class="card elev-sm" style="display:flex; flex-direction:column; padding:0; overflow:hidden;">
+        <figure class="lighten"><img src="images/mcpjungle-dashboard.png" alt="MCPJungle dashboard article preview" style="width:100%; aspect-ratio:16/10; object-fit:cover;"></figure>
+        <div style="padding: var(--space-4);">
+          <div class="card-kicker" style="display:flex; gap:var(--space-2); align-items:center;"><span>May 20, 2026</span><span class="tag tag-accent">AI Tooling</span></div>
+          <h3 class="card-title" style="font-size:20px; margin: var(--space-2) 0;"><a href="mcpjungle.html">MCPJungle: One Gateway for All My MCP Servers</a></h3>
+          <p class="card-body">How I moved from scattered MCP configs in Claude, Cursor, and Codex to one self-hosted gateway with dashboard, tokens, groups, and access control.</p>
+          <a href="mcpjungle.html" style="display:inline-flex; align-items:center; gap:6px; margin-top:var(--space-3); font-size:14px;">Read article <svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg></a>
+        </div>
+      </article>
 
-     <section id="topics" class="content-section" aria-labelledby="topics-title">
-          <div class="section-heading">
-               <p class="eyebrow">Topics</p>
-               <h2 id="topics-title">What I write about</h2>
-          </div>
-          <div class="topic-grid">
-               <div class="topic-card">
-                    <h3>Kubernetes</h3>
-                    <p>EKS, autoscaling, networking, GitOps, and operating clusters in real environments.</p>
-               </div>
-               <div class="topic-card">
-                    <h3>Automation</h3>
-                    <p>n8n, Slack workflows, internal tooling, and secure integration patterns.</p>
-               </div>
-               <div class="topic-card">
-                    <h3>AI Tooling</h3>
-                    <p>MCP gateways, agent tools, client configuration, and governed access to real systems.</p>
-               </div>
-               <div class="topic-card">
-                    <h3>Cloud Security</h3>
-                    <p>Ingress control, WAF boundaries, secret handling, and practical production guardrails.</p>
-               </div>
-               <div class="topic-card">
-                    <h3>Engineering Notes</h3>
-                    <p>Debug stories, migration notes, and decisions that are useful to revisit later.</p>
-               </div>
-          </div>
-     </section>
+      <article class="card elev-sm" style="display:flex; flex-direction:column; padding:0; overflow:hidden;">
+        <figure class="lighten"><img src="images/karpenter1.png" alt="Karpenter article preview" style="width:100%; aspect-ratio:16/10; object-fit:cover;"></figure>
+        <div style="padding: var(--space-4);">
+          <div class="card-kicker" style="display:flex; gap:var(--space-2); align-items:center;"><span>Mar 3, 2023</span><span class="tag tag-accent">Kubernetes</span></div>
+          <h3 class="card-title" style="font-size:20px; margin: var(--space-2) 0;"><a href="karpenter.html">Karpenter with AWS EKS</a></h3>
+          <p class="card-body">Deploying and testing Karpenter on EKS, with notes on node provisioning, instance selection, and autoscaling behavior.</p>
+          <a href="karpenter.html" style="display:inline-flex; align-items:center; gap:6px; margin-top:var(--space-3); font-size:14px;">Read article <svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg></a>
+        </div>
+      </article>
 
-     <section id="about" class="about-panel" aria-labelledby="about-title">
-          <div>
-               <p class="eyebrow">About</p>
-               <h2 id="about-title">Thi</h2>
-          </div>
-          <p>I work on DevOps, cloud infrastructure, automation, and internal platforms. This blog is my place to turn daily engineering work into readable notes: what problem appeared, what tradeoff mattered, and what I would keep for next time.</p>
-     </section>
+      <article class="card elev-sm" style="display:flex; flex-direction:column; padding:0; overflow:hidden;">
+        <figure class="lighten"><img src="images/blog-image1.jpg" alt="Cluster API and ArgoCD article preview" style="width:100%; aspect-ratio:16/10; object-fit:cover;"></figure>
+        <div style="padding: var(--space-4);">
+          <div class="card-kicker" style="display:flex; gap:var(--space-2); align-items:center;"><span>Sep 20, 2022</span><span class="tag tag-neutral">GitOps</span></div>
+          <h3 class="card-title" style="font-size:20px; margin: var(--space-2) 0;"><a href="create-and-manage-kubernetes-clusters-with-cluster-api-and-argocd.html">Create and Manage Kubernetes Clusters with Cluster API and ArgoCD</a></h3>
+          <p class="card-body">A walkthrough of Cluster API and ArgoCD for managing Kubernetes clusters from a single declarative source.</p>
+          <a href="create-and-manage-kubernetes-clusters-with-cluster-api-and-argocd.html" style="display:inline-flex; align-items:center; gap:6px; margin-top:var(--space-3); font-size:14px;">Read article <svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg></a>
+        </div>
+      </article>
+
+      <article class="card elev-sm" style="display:flex; flex-direction:column; padding:0; overflow:hidden;">
+        <figure class="lighten"><img src="images/blog-image2.jpg" alt="Helm article preview" style="width:100%; aspect-ratio:16/10; object-fit:cover;"></figure>
+        <div style="padding: var(--space-4);">
+          <div class="card-kicker" style="display:flex; gap:var(--space-2); align-items:center;"><span>Jun 10, 2022</span><span class="tag tag-neutral">Helm</span></div>
+          <h3 class="card-title" style="font-size:20px; margin: var(--space-2) 0;"><a href="helm-chart.html">Helm Library Charts and Helm Unit Test</a></h3>
+          <p class="card-body">Notes on building reusable Helm library chart templates and testing rendered manifests with helm-unittest.</p>
+          <a href="helm-chart.html" style="display:inline-flex; align-items:center; gap:6px; margin-top:var(--space-3); font-size:14px;">Read article <svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg></a>
+        </div>
+      </article>
+
+      <article class="card elev-sm" style="display:flex; flex-direction:column; padding:0; overflow:hidden;">
+        <figure class="lighten"><img src="images/blog-image5.jpg" alt="Kubernetes multicluster article preview" style="width:100%; aspect-ratio:16/10; object-fit:cover;"></figure>
+        <div style="padding: var(--space-4);">
+          <div class="card-kicker" style="display:flex; gap:var(--space-2); align-items:center;"><span>May 30, 2017</span><span class="tag tag-neutral">Networking</span></div>
+          <h3 class="card-title" style="font-size:20px; margin: var(--space-2) 0;"><a href="k8s-multicluster-with-kind-and-cilium.html">Kubernetes Multicluster with Kind and Cilium</a></h3>
+          <p class="card-body">Local multicluster Kubernetes notes using Kind and Cilium, focused on learning cluster connectivity patterns.</p>
+          <a href="k8s-multicluster-with-kind-and-cilium.html" style="display:inline-flex; align-items:center; gap:6px; margin-top:var(--space-3); font-size:14px;">Read article <svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg></a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section id="topics" aria-labelledby="topics-title" style="padding: 56px 0;">
+    <span class="eyebrow">Topics</span>
+    <h2 id="topics-title" style="font-size: clamp(28px,3.4vw,40px); margin: 0 0 var(--space-6);">What I write about</h2>
+
+    <div>
+      <div style="display:grid; grid-template-columns: minmax(64px,140px) minmax(0,1fr); gap: var(--space-4) clamp(24px,4vw,72px); align-items:baseline; padding: var(--space-4) 0; border-top: 1px solid var(--color-divider);">
+        <p style="font-family: var(--font-heading); font-size:15px; color: var(--color-accent); margin:0;">01</p>
+        <div><h3 style="font-size:22px; margin:0 0 6px;">Kubernetes</h3><p style="margin:0; color: color-mix(in srgb, var(--color-text) 78%, transparent); max-width:60ch;">EKS, autoscaling, networking, GitOps, and operating clusters in real environments.</p></div>
+      </div>
+      <div style="display:grid; grid-template-columns: minmax(64px,140px) minmax(0,1fr); gap: var(--space-4) clamp(24px,4vw,72px); align-items:baseline; padding: var(--space-4) 0; border-top: 1px solid var(--color-divider);">
+        <p style="font-family: var(--font-heading); font-size:15px; color: var(--color-accent); margin:0;">02</p>
+        <div><h3 style="font-size:22px; margin:0 0 6px;">Automation</h3><p style="margin:0; color: color-mix(in srgb, var(--color-text) 78%, transparent); max-width:60ch;">n8n, Slack workflows, internal tooling, and secure integration patterns.</p></div>
+      </div>
+      <div style="display:grid; grid-template-columns: minmax(64px,140px) minmax(0,1fr); gap: var(--space-4) clamp(24px,4vw,72px); align-items:baseline; padding: var(--space-4) 0; border-top: 1px solid var(--color-divider);">
+        <p style="font-family: var(--font-heading); font-size:15px; color: var(--color-accent); margin:0;">03</p>
+        <div><h3 style="font-size:22px; margin:0 0 6px;">AI Tooling</h3><p style="margin:0; color: color-mix(in srgb, var(--color-text) 78%, transparent); max-width:60ch;">MCP gateways, agent tools, client configuration, and governed access to real systems.</p></div>
+      </div>
+      <div style="display:grid; grid-template-columns: minmax(64px,140px) minmax(0,1fr); gap: var(--space-4) clamp(24px,4vw,72px); align-items:baseline; padding: var(--space-4) 0; border-top: 1px solid var(--color-divider);">
+        <p style="font-family: var(--font-heading); font-size:15px; color: var(--color-accent); margin:0;">04</p>
+        <div><h3 style="font-size:22px; margin:0 0 6px;">Cloud Security</h3><p style="margin:0; color: color-mix(in srgb, var(--color-text) 78%, transparent); max-width:60ch;">Ingress control, WAF boundaries, secret handling, and practical production guardrails.</p></div>
+      </div>
+      <div style="display:grid; grid-template-columns: minmax(64px,140px) minmax(0,1fr); gap: var(--space-4) clamp(24px,4vw,72px); align-items:baseline; padding: var(--space-4) 0; border-top: 1px solid var(--color-divider); border-bottom: 1px solid var(--color-divider);">
+        <p style="font-family: var(--font-heading); font-size:15px; color: var(--color-accent); margin:0;">05</p>
+        <div><h3 style="font-size:22px; margin:0 0 6px;">Engineering Notes</h3><p style="margin:0; color: color-mix(in srgb, var(--color-text) 78%, transparent); max-width:60ch;">Debug stories, migration notes, and decisions that are useful to revisit later.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" aria-labelledby="about-title" style="padding: 56px 0 72px; display:grid; grid-template-columns: minmax(0,5fr) minmax(0,7fr); gap: var(--space-6) clamp(24px,5vw,96px); align-items:center;">
+    <figure class="lighten">
+      <img src="images/thi-hero-bg.jpg" alt="Thi about-page portrait" style="width:100%; aspect-ratio: 4/5; object-fit:cover; border-radius: 14px;">
+    </figure>
+    <div>
+      <span class="eyebrow">About</span>
+      <h2 id="about-title" style="font-size: clamp(28px,3.4vw,40px); margin: 0 0 var(--space-4);">Thi</h2>
+      <p style="font-size:16px; line-height:1.65; max-width:60ch; color: color-mix(in srgb, var(--color-text) 82%, transparent); margin:0;">I work on DevOps, cloud infrastructure, automation, and internal platforms. This blog is my place to turn daily engineering work into readable notes: what problem appeared, what tradeoff mattered, and what I would keep for next time.</p>
+      <div style="display:flex; gap: var(--space-3); margin-top: var(--space-6); flex-wrap: wrap;">
+        <a href="contact.html" class="btn btn-primary">Contact</a>
+        <a href="gallery.html" class="btn btn-ghost">Gallery</a>
+        <a href="https://dinhdobathi.com" class="btn btn-ghost">CV</a>
+      </div>
+    </div>
+  </section>
+
+</div>
 </main>
 
-<footer class="site-footer">
-     <p>Copyright &copy; 2026 DinhDoBaThi</p>
-     <div class="footer-links">
-          <a href="contact.html">Contact</a>
-          <a href="gallery.html">Gallery</a>
-          <a href="https://dinhdobathi.com">CV</a>
-     </div>
+<hr class="hr">
+
+<footer style="max-width: 1200px; margin: 0 auto; padding: var(--space-6) clamp(20px,5vw,72px); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap: var(--space-3); font-size:13px; color: color-mix(in srgb, var(--color-text) 55%, transparent);">
+  <span>Copyright &copy; 2026 DinhDoBaThi</span>
+  <div style="display:flex; gap: var(--space-4);">
+    <a href="contact.html">Contact</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="https://dinhdobathi.com">CV</a>
+  </div>
 </footer>
+
+<script src="js/hero-network.js"></script>
 </body>
 </html>
