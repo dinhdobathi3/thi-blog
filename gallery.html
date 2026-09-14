@@ -1,54 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta name="description" content="Photo gallery — Thi's personal tech blog.">
 <meta name="keywords" content="Thi, gallery, photos">
 <meta name="author" content="Thi">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>Gallery — Thi</title>
-<link rel="stylesheet" href="css/nocturne.css">
-</head>
-<body>
-<a class="skip-link" href="#main">Skip to main content</a>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="js/tailwind-config.js"></script>
+</head><body class="bg-background font-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container">
+<header class="fixed top-0 left-0 right-0 w-full z-50 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30"><div class="h-16 max-w-7xl mx-auto px-gutter flex items-center justify-between gap-4"><div class="flex items-center gap-4 shrink-0"><a class="flex items-center gap-3 group" href="index.html"><div class="h-8 w-8 rounded-lg bg-surface-container-high flex items-center justify-center shrink-0"><span class="font-label-code text-label-code text-secondary font-bold tracking-tight">T//</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none group-hover:text-primary transition-colors">THI</span><span class="font-label-code text-label-code text-outline leading-tight">SRE.SYS.LOG</span></div></a></div><nav class="hidden lg:flex items-center gap-1"><a class="px-space-md py-space-xs rounded font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="index.html#production-log">Articles</a><a class="px-space-md py-space-xs rounded font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="index.html#taxonomy-matrix">Topics</a><a class="px-space-md py-space-xs rounded font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="index.html#featured-walkthrough">Architecture</a><a class="px-space-md py-space-xs rounded font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="index.html#about">About</a></nav><div class="flex items-center gap-space-sm shrink-0"><a aria-label="RSS Feed" class="w-8 h-8 rounded-lg flex items-center justify-center bg-surface-container-low border border-outline-variant/40 text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-container/50 transition-colors" href="#"><span class="material-symbols-outlined text-[18px]">rss_feed</span></a><a class="hidden sm:inline-flex items-center gap-1.5 px-space-md py-space-xs rounded-lg bg-surface-container text-on-surface border border-outline-variant hover:border-secondary-container hover:text-secondary transition-all font-label-code text-label-code" href="https://dinhdobathi.com" rel="noopener" target="_blank"><span class="material-symbols-outlined text-[16px]">description</span>CV</a><img alt="Thi profile" class="w-8 h-8 rounded-full object-cover" src="images/thi-profile.jpg"/></div></div></header>
 
-<nav class="nav" aria-label="Primary navigation" style="position: sticky; top: 0; z-index: 20; backdrop-filter: blur(16px); background: color-mix(in srgb, var(--color-bg) 78%, transparent); padding-inline: max(var(--space-4), calc((100% - 1200px) / 2 + var(--space-4)));">
-  <a href="index.html" class="nav-brand gradtext" style="font-size: 18px;">Thi</a>
-  <a href="index.html#posts">Posts</a>
-  <a href="index.html#topics">Topics</a>
-  <a href="index.html#about">About</a>
-  <a href="contact.html">Contact</a>
-  <a href="gallery.html" aria-current="page">Gallery</a>
-  <a href="https://dinhdobathi.com" class="btn btn-secondary">CV</a>
-</nav>
+<main class="w-full pt-16 bg-background min-h-screen">
+<div class="relative w-full overflow-hidden">
+<div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[420px] bg-primary-container/15 blur-[140px] pointer-events-none rounded-full"></div>
+<div class="max-w-7xl mx-auto px-gutter pt-space-2xl pb-space-lg relative">
+<span class="font-label-caps text-label-caps text-primary tracking-widest uppercase">Gallery</span>
+<h1 class="font-display-hero text-display-hero text-on-surface tracking-tight mt-space-xs mb-space-md" style="font-size: clamp(34px, 5vw, 56px);">Photos</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">A small collection of images from the blog and beyond.</p>
+</div>
+</div>
 
-<main id="main">
-  <div style="max-width: 1200px; margin: 0 auto; padding: 96px clamp(20px,5vw,72px) 24px;">
-    <span class="eyebrow">Gallery</span>
-    <h1 style="font-size: clamp(34px, 5vw, 56px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 var(--space-4);">Photos</h1>
-    <p style="font-size: 17px; line-height: 1.65; color: color-mix(in srgb, var(--color-text) 82%, transparent); max-width: 60ch; margin: 0 0 var(--space-8);">A small collection of images from the blog and beyond.</p>
-  </div>
-
-  <div style="max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px,5vw,72px) 96px; display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-4);">
-    <figure class="lighten" style="margin:0;"><img src="images/gallery-image1.jpg" alt="Gallery photo 1" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius: var(--radius-md); border: 1px solid var(--color-divider);"></figure>
-    <figure class="lighten" style="margin:0;"><img src="images/gallery-image2.jpg" alt="Gallery photo 2" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius: var(--radius-md); border: 1px solid var(--color-divider);"></figure>
-    <figure class="lighten" style="margin:0;"><img src="images/gallery-image3.jpg" alt="Gallery photo 3" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius: var(--radius-md); border: 1px solid var(--color-divider);"></figure>
-    <figure class="lighten" style="margin:0;"><img src="images/gallery-image4.jpg" alt="Gallery photo 4" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius: var(--radius-md); border: 1px solid var(--color-divider);"></figure>
-    <figure class="lighten" style="margin:0;"><img src="images/gallery-image5.jpg" alt="Gallery photo 5" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius: var(--radius-md); border: 1px solid var(--color-divider);"></figure>
-    <figure class="lighten" style="margin:0;"><img src="images/gallery-image6.jpg" alt="Gallery photo 6" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius: var(--radius-md); border: 1px solid var(--color-divider);"></figure>
-  </div>
+<div class="max-w-7xl mx-auto px-gutter pb-space-2xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-space-lg">
+<figure class="m-0 rounded-xl overflow-hidden border border-outline-variant/30 bg-surface-container-low"><img alt="Gallery photo 1" class="w-full aspect-[4/3] object-cover" src="images/gallery-image1.jpg"></figure>
+<figure class="m-0 rounded-xl overflow-hidden border border-outline-variant/30 bg-surface-container-low"><img alt="Gallery photo 2" class="w-full aspect-[4/3] object-cover" src="images/gallery-image2.jpg"></figure>
+<figure class="m-0 rounded-xl overflow-hidden border border-outline-variant/30 bg-surface-container-low"><img alt="Gallery photo 3" class="w-full aspect-[4/3] object-cover" src="images/gallery-image3.jpg"></figure>
+<figure class="m-0 rounded-xl overflow-hidden border border-outline-variant/30 bg-surface-container-low"><img alt="Gallery photo 4" class="w-full aspect-[4/3] object-cover" src="images/gallery-image4.jpg"></figure>
+<figure class="m-0 rounded-xl overflow-hidden border border-outline-variant/30 bg-surface-container-low"><img alt="Gallery photo 5" class="w-full aspect-[4/3] object-cover" src="images/gallery-image5.jpg"></figure>
+<figure class="m-0 rounded-xl overflow-hidden border border-outline-variant/30 bg-surface-container-low"><img alt="Gallery photo 6" class="w-full aspect-[4/3] object-cover" src="images/gallery-image6.jpg"></figure>
+</div>
 </main>
 
-<hr class="hr">
-
-<footer class="site-footer">
-  <p style="margin:0;">Copyright &copy; 2026 DinhDoBaThi</p>
-  <div class="footer-links">
-    <a href="index.html">Home</a>
-    <a href="contact.html">Contact</a>
-    <a href="https://dinhdobathi.com">CV</a>
-  </div>
-</footer>
+<footer class="w-full bg-surface-container-lowest border-t border-outline-variant/20 pt-space-2xl pb-space-xl text-on-surface-variant"><div class="max-w-7xl mx-auto px-gutter flex flex-col md:flex-row items-center justify-between gap-4"><span class="font-label-code text-label-code text-outline">© 2026 DinhDoBaThi.</span><div class="flex items-center gap-space-lg font-body-sm text-body-sm"><a class="text-on-surface-variant hover:text-secondary transition-colors" href="index.html">Home</a><a class="text-on-surface-variant hover:text-secondary transition-colors" href="index.html#production-log">Articles</a><a class="text-on-surface-variant hover:text-secondary transition-colors" href="contact.html">Contact</a></div></div></footer>
 </body>
 </html>
