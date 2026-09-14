@@ -1,208 +1,740 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta name="description" content="Thi's personal tech blog on DevOps, Kubernetes, automation, AI tooling, and infrastructure engineering.">
 <meta name="keywords" content="Thi, DevOps, Kubernetes, automation, n8n, MCPJungle, Karpenter, Helm, infrastructure">
 <meta name="author" content="Thi">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
 <title>Thi - Personal Tech Blog</title>
-
-<link rel="stylesheet" href="css/nocturne.css">
-<style>
-html { scroll-behavior: smooth; }
-@media (max-width: 860px) {
-  #hero-grid, #about {
-    grid-template-columns: 1fr !important;
-  }
-  #stats-grid {
-    grid-template-columns: 1fr !important;
-    justify-content: start !important;
-  }
-}
-</style>
-</head>
-<body>
-<a class="skip-link" href="#main">Skip to main content</a>
-
-<nav class="nav" aria-label="Primary navigation" style="position: sticky; top: 0; z-index: 20; backdrop-filter: blur(16px); background: color-mix(in srgb, var(--color-bg) 78%, transparent); padding-inline: max(var(--space-4), calc((100% - 1200px) / 2 + var(--space-4)));">
-  <a href="index.html" class="nav-brand gradtext" style="font-size: 18px;">Thi</a>
-  <a href="#posts">Posts</a>
-  <a href="#topics">Topics</a>
-  <a href="#about">About</a>
-  <a href="contact.html">Contact</a>
-  <a href="gallery.html">Gallery</a>
-  <a href="https://dinhdobathi.com" class="btn btn-secondary">CV</a>
-</nav>
-
-<main id="main">
-<div style="max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px,5vw,72px);">
-
-  <section id="hero-grid" aria-labelledby="hero-title" style="padding: 72px 0 56px; display: grid; grid-template-columns: minmax(0,6fr) minmax(0,5fr); gap: var(--space-6); align-items: center;">
-    <div style="position:relative; overflow:hidden;">
-    <canvas id="hero-canvas" aria-hidden="true" style="position:absolute; inset: -15% -10%; width: 130%; height: 140%; z-index: 0; pointer-events: none; opacity: 0.4; mask-image: radial-gradient(closest-side, black 55%, transparent 100%); -webkit-mask-image: radial-gradient(closest-side, black 55%, transparent 100%);"></canvas>
-    <div style="position:relative; z-index:1;">
-      <span class="eyebrow">Senior DevOps Engineer &amp; SRE</span>
-      <h1 id="hero-title" style="font-size: clamp(40px, 6vw, 76px); line-height: 1.02; letter-spacing: -0.02em; margin: 0;">Hi, I'm <span class="gradtext">Thi.</span><br>Personal tech blog</h1>
-      <p style="font-size: 17px; line-height: 1.65; max-width: 52ch; color: color-mix(in srgb, var(--color-text) 82%, transparent); margin: var(--space-4) 0 0;">Personal technical writing about Kubernetes, n8n automation, cloud infrastructure, security boundaries, and the small production decisions that matter.</p>
-      <div style="display:flex; gap: var(--space-3); margin-top: var(--space-6); flex-wrap: wrap;">
-        <a href="#posts" class="btn btn-primary">Read posts</a>
-        <a href="#about" class="btn btn-ghost">About Thi</a>
-      </div>
-    </div>
-    </div>
-    <div style="position:relative; z-index:1; display:grid; gap: var(--space-3);" aria-label="Featured article images">
-      <figure class="lighten">
-        <img src="images/thi-profile.jpg" alt="Thi profile portrait" style="width:100%; aspect-ratio: 4/3; object-fit: cover; object-position: top; border-radius: 14px;">
-      </figure>
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: var(--space-3);">
-        <figure class="lighten"><img src="images/karpenter1.png" alt="Karpenter article preview" style="width:100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 10px;"></figure>
-        <figure class="lighten"><img src="images/blog-image1.jpg" alt="Cluster API article preview" style="width:100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 10px;"></figure>
-      </div>
-    </div>
-  </section>
-
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;family=Manrope:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script src="js/tailwind-config.js"></script></head><body class="bg-background font-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container">
+<header class="fixed top-0 left-0 right-0 w-full z-50 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30"><div class="h-16 max-w-7xl mx-auto px-gutter flex items-center justify-between gap-4"><div class="flex items-center gap-4 shrink-0"><a class="flex items-center gap-3 group" href="index.html"><div class="h-8 w-8 rounded-lg bg-surface-container-high flex items-center justify-center shrink-0"><span class="font-label-code text-label-code text-secondary font-bold tracking-tight">T//</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none group-hover:text-primary transition-colors">THI</span><span class="font-label-code text-label-code text-outline leading-tight">SRE.SYS.LOG</span></div></a><div class="hidden xl:flex items-center gap-2 px-space-sm py-space-xs rounded bg-surface-container-high/60 border border-outline-variant/40"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary-container opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-secondary-container"></span></span><span class="font-label-code text-label-code text-secondary tracking-wider">PROD STATUS // OPERATIONAL</span></div></div><nav class="hidden lg:flex items-center gap-1"><a aria-current="page" class="px-space-md py-space-xs rounded transition-colors bg-surface-container-high text-primary border border-outline-variant/60 font-semibold" href="#production-log">Articles</a><a class="px-space-md py-space-xs rounded font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#taxonomy-matrix">Topics</a><a class="px-space-md py-space-xs rounded font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#featured-walkthrough">Architecture</a><a class="px-space-md py-space-xs rounded font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#about">About</a></nav><div class="flex items-center gap-space-sm shrink-0"><a aria-label="RSS Feed" class="w-8 h-8 rounded-lg flex items-center justify-center bg-surface-container-low border border-outline-variant/40 text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-container/50 transition-colors" href="#"><span class="material-symbols-outlined text-[18px]">rss_feed</span></a><a class="hidden sm:inline-flex items-center gap-1.5 px-space-md py-space-xs rounded-lg bg-surface-container text-on-surface border border-outline-variant hover:border-secondary-container hover:text-secondary transition-all font-label-code text-label-code" href="https://dinhdobathi.com" rel="noopener" target="_blank"><span class="material-symbols-outlined text-[16px]">description</span>CV</a><img alt="Thi profile" class="w-8 h-8 rounded-full object-cover" src="images/thi-profile.jpg"/></div></div></header><main class="w-full pt-16 bg-background min-h-screen"><div class="flex flex-col w-full">
+<!-- Top Atmospheric Radial Glow -->
+<div class="relative w-full overflow-hidden">
+<div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[1100px] h-[480px] bg-primary-container/15 blur-[140px] pointer-events-none rounded-full"></div>
+<div class="absolute top-20 right-10 w-[420px] h-[320px] bg-secondary-container/10 blur-[120px] pointer-events-none rounded-full"></div>
+<!-- Section 1: Hero & Systems Telemetry -->
+<div class="max-w-7xl mx-auto px-gutter pt-space-xl pb-space-2xl">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-center">
+<!-- Hero Left Column (7 cols) -->
+<div class="lg:col-span-7 flex flex-col items-start gap-space-md">
+<!-- Terminal Status Pill -->
+<div class="inline-flex items-center gap-2.5 px-space-md py-1 rounded-full bg-surface-container-high/80 backdrop-blur-md shadow-sm">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary-container opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-secondary-container"></span>
+</span>
+<span class="font-label-code text-label-code text-secondary tracking-wider">PROD STATUS // OPERATIONAL - US-EAST / MULTI-REGION</span>
 </div>
-
-<section aria-label="Blog, by the numbers" style="background: radial-gradient(900px 420px at 85% -40%, color-mix(in srgb, var(--color-section-glow) 70%, transparent), transparent 64%), var(--color-section); padding: 44px 0;">
-  <div id="stats-grid" style="max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px,5vw,72px); display:grid; grid-template-columns: repeat(3, auto); justify-content: space-between; gap: var(--space-6); flex-wrap: wrap;">
-    <div><p class="gradtext" style="font-size: clamp(32px,3.4vw,46px); margin:0;">06</p><p style="font-size:13px; letter-spacing:0.06em; text-transform:uppercase; color: color-mix(in srgb, var(--color-text) 70%, transparent); margin: var(--space-2) 0 0;">Published posts</p></div>
-    <div><p class="gradtext" style="font-size: clamp(32px,3.4vw,46px); margin:0;">05</p><p style="font-size:13px; letter-spacing:0.06em; text-transform:uppercase; color: color-mix(in srgb, var(--color-text) 70%, transparent); margin: var(--space-2) 0 0;">Core topics</p></div>
-    <div><p class="gradtext" style="font-size: clamp(32px,3.4vw,46px); margin:0;">2017&ndash;2026</p><p style="font-size:13px; letter-spacing:0.06em; text-transform:uppercase; color: color-mix(in srgb, var(--color-text) 70%, transparent); margin: var(--space-2) 0 0;">Notes archive</p></div>
-  </div>
+<div class="space-y-space-xs mt-space-xs">
+<span class="font-label-caps text-label-caps text-primary tracking-widest uppercase">SENIOR DEVOPS ENGINEER &amp; SRE</span>
+<h1 class="font-display-hero text-display-hero text-on-surface tracking-tight max-w-2xl">
+              Hi, I'm Thi. <br/>
+<span class="bg-gradient-to-r from-on-surface via-primary to-secondary-fixed bg-clip-text text-transparent">
+                DevOps, SRE &amp; Cloud Architecture
+              </span>
+              Journal.
+            </h1>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+            Personal technical writing about Kubernetes, n8n automation, cloud infrastructure, security boundaries, and the small production decisions that matter in high-scale environments.
+          </p>
+<!-- CTAs -->
+<div class="flex flex-wrap items-center gap-space-md pt-space-sm">
+<a class="inline-flex items-center gap-2 px-space-lg py-3 rounded-lg bg-primary-container text-on-primary font-headline-sm text-body-md shadow-lg shadow-primary-container/30 hover:shadow-primary-container/60 hover:brightness-110 transition-all duration-300" href="#featured-walkthrough">
+<span>Explore Deep Dives</span>
+<span class="material-symbols-outlined text-[18px]">arrow_downward</span>
+</a>
+<a class="inline-flex items-center gap-2 px-space-lg py-3 rounded-lg bg-surface-container-high/70 hover:bg-surface-container-highest text-on-surface font-body-md shadow-sm hover:text-secondary-fixed transition-all duration-300" href="#taxonomy-matrix">
+<span class="material-symbols-outlined text-[18px] text-secondary">schema</span>
+<span>Browse Architecture Topics</span>
+</a>
+</div>
+<!-- Micro Quick Credential Badges -->
+<div class="flex items-center gap-6 pt-space-md text-outline font-label-code text-label-code">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[16px]">terminal</span>
+<span>k8s 1.30+</span>
+</div>
+<span class="text-surface-variant">•</span>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[16px]">memory</span>
+<span>eBPF &amp; Cilium</span>
+</div>
+<span class="text-surface-variant">•</span>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-fixed text-[16px]">verified_user</span>
+<span>Zero-Trust mTLS</span>
+</div>
+</div>
+</div>
+<!-- Hero Right Column: Systems Telemetry Console (5 cols) -->
+<div class="lg:col-span-5 flex flex-col gap-space-md">
+<div class="rounded-xl bg-surface-container-low shadow-xl p-space-lg backdrop-blur-xl relative overflow-hidden group">
+<div class="absolute -right-12 -top-12 w-48 h-48 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+<!-- Terminal Bar -->
+<div class="flex items-center justify-between pb-space-md mb-space-md bg-surface-container-lowest/60 -mx-space-lg -mt-space-lg px-space-lg py-space-sm">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-error/70 inline-block"></span>
+<span class="w-3 h-3 rounded-full bg-amber-400/70 inline-block"></span>
+<span class="w-3 h-3 rounded-full bg-emerald-400/70 inline-block"></span>
+<span class="font-label-code text-label-code text-on-surface-variant ml-2">telemetry://prod-mon-01</span>
+</div>
+<span class="font-label-code text-[11px] text-secondary-fixed bg-secondary-container/20 px-2 py-0.5 rounded">STREAMING 60FPS</span>
+</div>
+<!-- Telemetry Header Stats -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-space-md">
+<div class="p-space-sm rounded-lg bg-surface-container">
+<span class="block font-label-code text-[10px] text-outline uppercase">Deep Dives</span>
+<span class="font-headline-md text-headline-md text-primary tracking-tight font-bold">06</span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container">
+<span class="block font-label-code text-[10px] text-outline uppercase">Core Topics</span>
+<span class="font-headline-md text-headline-md text-secondary-fixed tracking-tight font-bold">05</span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container">
+<span class="block font-label-code text-[10px] text-outline uppercase">Archived</span>
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight font-bold">9y+</span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container">
+<span class="block font-label-code text-[10px] text-outline uppercase">Mindset</span>
+<span class="font-headline-md text-headline-md text-secondary-container tracking-tight font-bold">99.99%</span>
+</div>
+</div>
+<!-- Cluster SVG Activity Pulse Monitor -->
+<div class="p-space-md rounded-lg bg-surface-container-lowest flex flex-col gap-2">
+<div class="flex items-center justify-between text-outline font-label-code text-[11px]">
+<span>GLOBAL LATENCY &amp; PACKET RATE</span>
+<span class="text-secondary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container animate-pulse"></span>
+                  p99: 14.2ms
+                </span>
+</div>
+<!-- Telemetry Sparkline -->
+<svg class="w-full h-16 text-primary-container" fill="none" preserveaspectratio="none" viewbox="0 0 360 60">
+<defs>
+<lineargradient id="telemetryGrad" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#7928ca" stop-opacity="0.45"></stop>
+<stop offset="100%" stop-color="#00f1fd" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,45 Q20,38 40,42 T80,25 T120,30 T160,18 T200,28 T240,12 T280,32 T320,15 T360,20 L360,60 L0,60 Z" fill="url(#telemetryGrad)"></path>
+<path d="M0,45 Q20,38 40,42 T80,25 T120,30 T160,18 T200,28 T240,12 T280,32 T320,15 T360,20" fill="none" stroke="#00f1fd" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</div>
+<!-- Active Nodes Status Feed -->
+<div class="mt-space-md space-y-2 font-label-code text-code-inline text-on-surface-variant">
+<div class="flex items-center justify-between px-2.5 py-1.5 rounded bg-surface-container/60">
+<span class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+<span>karpenter.sh/pool-core-spot</span>
+</span>
+<span class="text-primary text-[12px]">28 NODES ACTIVE</span>
+</div>
+<div class="flex items-center justify-between px-2.5 py-1.5 rounded bg-surface-container/60">
+<span class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+<span>cilium-ebpf-mesh/east-1</span>
+</span>
+<span class="text-secondary text-[12px]">0 DROP / 1.4M PPS</span>
+</div>
+<div class="flex items-center justify-between px-2.5 py-1.5 rounded bg-surface-container/60">
+<span class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+<span>argo-cd/sync-engine</span>
+</span>
+<span class="text-on-surface-variant text-[12px]">SYNCHRONIZED (HEAD)</span>
+</div>
+</div>
+<!-- Footer Commit Hash -->
+<div class="mt-space-md pt-space-xs flex items-center justify-between text-outline font-label-code text-[11px]">
+<span>REGION: us-east-1 + ap-southeast-1</span>
+<span>SHA: e9b41a0</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 2: Flagship Featured Deep Dive (Wide Banner Card) -->
+<section class="w-full bg-surface-container-lowest/90 py-space-2xl" id="featured-walkthrough">
+<div class="max-w-7xl mx-auto px-gutter">
+<!-- Section Tag Header -->
+<div class="flex items-center justify-between mb-space-lg">
+<div class="flex items-center gap-3">
+<span class="px-2.5 py-1 rounded bg-secondary-container/10 text-secondary font-label-code text-label-code tracking-wider uppercase font-semibold">
+            FLAGSHIP ARCHITECTURE LOG
+          </span>
+<span class="font-label-code text-label-code text-outline">EDITION #2026.05</span>
+</div>
+<div class="hidden sm:flex items-center gap-2 text-outline font-label-code text-label-code">
+<span class="material-symbols-outlined text-[16px] text-secondary">bolt</span>
+<span>PRODUCTION VALIDATED ARCHITECTURE</span>
+</div>
+</div>
+<!-- Feature Card Container -->
+<div class="rounded-xl bg-surface-container-low shadow-2xl p-space-xl relative overflow-hidden transition-all duration-300">
+<!-- Subtle gradient background highlight -->
+<div class="absolute -bottom-24 -left-24 w-96 h-96 bg-primary-container/20 rounded-full blur-3xl pointer-events-none"></div>
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-xl">
+<!-- Left Content Side (6 cols) -->
+<div class="xl:col-span-6 flex flex-col justify-between">
+<div>
+<!-- Meta Tags -->
+<div class="flex flex-wrap items-center gap-2.5 mb-space-md">
+<span class="px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary font-label-caps text-label-caps uppercase font-bold">
+                  LATEST RELEASE
+                </span>
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-primary font-label-code text-label-code">
+                  AUTOMATION
+                </span>
+<span class="text-outline font-label-code text-label-code">•</span>
+<span class="text-outline font-label-code text-label-code flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 7 min read
+                </span>
+<span class="text-outline font-label-code text-label-code">•</span>
+<span class="text-outline font-label-code text-label-code">May 20, 2026</span>
+</div>
+<!-- Main Title -->
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mb-space-md hover:text-secondary-fixed transition-colors">
+                Building a Secure Webhook Gateway for Private n8n
+              </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-space-lg leading-relaxed">
+                Exposing your automated workflow engine to the public internet creates an immediate, unnecessary attack surface. Here is how we enforce end-to-end payload integrity: routing high-throughput Slack and external triggers through a Cloudflare Worker edge HMAC filter and Cloudflare Zero Trust Tunnel straight into an isolated VPC Kubernetes cluster.
+              </p>
+<!-- Key Pillars Checklist -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-space-lg font-body-sm text-body-sm text-on-surface">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-secondary-fixed text-[18px] shrink-0 mt-0.5">verified</span>
+<span>Zero open inbound firewall ports</span>
+</div>
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-secondary-fixed text-[18px] shrink-0 mt-0.5">verified</span>
+<span>Edge HMAC SHA-256 validation</span>
+</div>
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-secondary-fixed text-[18px] shrink-0 mt-0.5">verified</span>
+<span>Cloudflare Tunnel + mTLS ingress</span>
+</div>
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-secondary-fixed text-[18px] shrink-0 mt-0.5">verified</span>
+<span>Automated token replay defense</span>
+</div>
+</div>
+</div>
+<!-- Action Area -->
+<div class="flex flex-wrap items-center gap-space-md pt-space-md">
+<a class="inline-flex items-center gap-2 px-space-lg py-2.5 rounded-lg bg-primary-container text-on-primary font-headline-sm text-body-sm shadow-md hover:bg-inverse-primary transition-all" href="n8n-webhook-gateway.html">
+<span>Read Full Architecture Walkthrough</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded bg-surface-container-highest font-label-code text-[12px] text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary text-[16px]">terminal</span>
+<span>gateway.ts // 82 lines</span>
+</div>
+</div>
+</div>
+<!-- Right Interactive Architecture Flow Schematic (6 cols) -->
+<div class="xl:col-span-6 flex flex-col justify-center">
+<div class="rounded-lg bg-surface-container-lowest p-space-md shadow-inner space-y-3">
+<!-- Schematic Bar Title -->
+<div class="flex items-center justify-between pb-2">
+<span class="font-label-code text-[11px] text-outline flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[14px]">account_tree</span>
+                  TOPOLOGY: ZERO TRUST INGRESS PIPELINE
+                </span>
+<span class="font-label-code text-[10px] text-emerald-400 bg-emerald-950/40 px-2 py-0.5 rounded">mTLS STRICT</span>
+</div>
+<!-- Flow Node 1: Public Sender -->
+<div class="p-space-sm rounded bg-surface-container flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">send</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-body-sm text-on-surface">Public Webhook Origin</h4>
+<p class="font-label-code text-[11px] text-outline">Slack / GitHub / Third-party API</p>
+</div>
+</div>
+<span class="font-label-code text-[11px] text-on-surface-variant bg-surface-container-high px-2 py-1 rounded">HTTPS POST</span>
+</div>
+<!-- Flow Connection 1 -->
+<div class="flex justify-center -my-1">
+<div class="flex items-center gap-1.5 text-secondary-container font-label-code text-[11px]">
+<span class="material-symbols-outlined text-[16px]">south</span>
+<span>TLS 1.3 / Edge Entry</span>
+</div>
+</div>
+<!-- Flow Node 2: Cloudflare Edge -->
+<div class="p-space-sm rounded bg-surface-container flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-container/20 text-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">security</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-body-sm text-secondary-fixed">Cloudflare Edge (WAF + Worker)</h4>
+<p class="font-label-code text-[11px] text-outline">HMAC-SHA256 Sig Check • Rate Limiting • IP Geofence</p>
+</div>
+</div>
+<span class="font-label-code text-[11px] text-emerald-300 bg-emerald-900/30 px-2 py-1 rounded">VERIFIED</span>
+</div>
+<!-- Flow Connection 2 -->
+<div class="flex justify-center -my-1">
+<div class="flex items-center gap-1.5 text-primary font-label-code text-[11px]">
+<span class="material-symbols-outlined text-[16px]">south</span>
+<span>Cloudflared Tunnel Daemon</span>
+</div>
+</div>
+<!-- Flow Node 3: Zero Trust Tunnel -->
+<div class="p-space-sm rounded bg-surface-container flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-high text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">vpn_lock</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-body-sm text-on-surface">Zero Trust Encrypted Tunnel</h4>
+<p class="font-label-code text-[11px] text-outline">Outbound-Only WireGuard protocol</p>
+</div>
+</div>
+<span class="font-label-code text-[11px] text-primary bg-primary-container/20 px-2 py-1 rounded">NO OPEN PORTS</span>
+</div>
+<!-- Flow Connection 3 -->
+<div class="flex justify-center -my-1">
+<div class="flex items-center gap-1.5 text-secondary font-label-code text-[11px]">
+<span class="material-symbols-outlined text-[16px]">south</span>
+<span>Internal VPC Mesh</span>
+</div>
+</div>
+<!-- Flow Node 4: Private n8n Instance -->
+<div class="p-space-sm rounded bg-surface-container flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-secondary-container/20 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">lan</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-body-sm text-on-surface">Private n8n Engine</h4>
+<p class="font-label-code text-[11px] text-outline">Isolated k8s Pod • Non-root • Read-only FS</p>
+</div>
+</div>
+<span class="font-label-code text-[11px] text-secondary bg-surface-container-high px-2 py-1 rounded">SECURE EXEC</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </section>
-
-<div style="max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px,5vw,72px);">
-
-  <section id="posts" aria-labelledby="posts-title" style="padding: 64px 0 40px;">
-    <span class="eyebrow">Archive</span>
-    <h2 id="posts-title" style="font-size: clamp(28px,3.4vw,40px); margin: 0 0 var(--space-6);">All posts</h2>
-
-    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-6);">
-
-      <article class="card elev-sm" style="display:flex; flex-direction:column; padding:0; overflow:hidden;">
-        <figure class="lighten"><img src="images/home-bg.jpg" alt="n8n gateway article preview" style="width:100%; aspect-ratio:16/10; object-fit:cover;"></figure>
-        <div style="padding: var(--space-4);">
-          <div class="card-kicker" style="display:flex; gap:var(--space-2); align-items:center;"><span>May 20, 2026</span><span class="tag tag-accent">Automation</span></div>
-          <h3 class="card-title" style="font-size:20px; margin: var(--space-2) 0;"><a href="n8n-webhook-gateway.html">Building a Secure Webhook Gateway for Private n8n</a></h3>
-          <p class="card-body">How I kept n8n private while still letting Slack, Google Chat, and other public webhook sources trigger internal workflows through a small Cloudflare-protected gate.</p>
-          <a href="n8n-webhook-gateway.html" style="display:inline-flex; align-items:center; gap:6px; margin-top:var(--space-3); font-size:14px;">Read article <svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg></a>
-        </div>
-      </article>
-
-      <article class="card elev-sm" style="display:flex; flex-direction:column; padding:0; overflow:hidden;">
-        <figure class="lighten"><img src="images/mcpjungle-dashboard.png" alt="MCPJungle dashboard article preview" style="width:100%; aspect-ratio:16/10; object-fit:cover;"></figure>
-        <div style="padding: var(--space-4);">
-          <div class="card-kicker" style="display:flex; gap:var(--space-2); align-items:center;"><span>May 20, 2026</span><span class="tag tag-accent">AI Tooling</span></div>
-          <h3 class="card-title" style="font-size:20px; margin: var(--space-2) 0;"><a href="mcpjungle.html">MCPJungle: One Gateway for All My MCP Servers</a></h3>
-          <p class="card-body">How I moved from scattered MCP configs in Claude, Cursor, and Codex to one self-hosted gateway with dashboard, tokens, groups, and access control.</p>
-          <a href="mcpjungle.html" style="display:inline-flex; align-items:center; gap:6px; margin-top:var(--space-3); font-size:14px;">Read article <svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg></a>
-        </div>
-      </article>
-
-      <article class="card elev-sm" style="display:flex; flex-direction:column; padding:0; overflow:hidden;">
-        <figure class="lighten"><img src="images/karpenter1.png" alt="Karpenter article preview" style="width:100%; aspect-ratio:16/10; object-fit:cover;"></figure>
-        <div style="padding: var(--space-4);">
-          <div class="card-kicker" style="display:flex; gap:var(--space-2); align-items:center;"><span>Mar 3, 2023</span><span class="tag tag-accent">Kubernetes</span></div>
-          <h3 class="card-title" style="font-size:20px; margin: var(--space-2) 0;"><a href="karpenter.html">Karpenter with AWS EKS</a></h3>
-          <p class="card-body">Deploying and testing Karpenter on EKS, with notes on node provisioning, instance selection, and autoscaling behavior.</p>
-          <a href="karpenter.html" style="display:inline-flex; align-items:center; gap:6px; margin-top:var(--space-3); font-size:14px;">Read article <svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg></a>
-        </div>
-      </article>
-
-      <article class="card elev-sm" style="display:flex; flex-direction:column; padding:0; overflow:hidden;">
-        <figure class="lighten"><img src="images/blog-image1.jpg" alt="Cluster API and ArgoCD article preview" style="width:100%; aspect-ratio:16/10; object-fit:cover;"></figure>
-        <div style="padding: var(--space-4);">
-          <div class="card-kicker" style="display:flex; gap:var(--space-2); align-items:center;"><span>Sep 20, 2022</span><span class="tag tag-neutral">GitOps</span></div>
-          <h3 class="card-title" style="font-size:20px; margin: var(--space-2) 0;"><a href="create-and-manage-kubernetes-clusters-with-cluster-api-and-argocd.html">Create and Manage Kubernetes Clusters with Cluster API and ArgoCD</a></h3>
-          <p class="card-body">A walkthrough of Cluster API and ArgoCD for managing Kubernetes clusters from a single declarative source.</p>
-          <a href="create-and-manage-kubernetes-clusters-with-cluster-api-and-argocd.html" style="display:inline-flex; align-items:center; gap:6px; margin-top:var(--space-3); font-size:14px;">Read article <svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg></a>
-        </div>
-      </article>
-
-      <article class="card elev-sm" style="display:flex; flex-direction:column; padding:0; overflow:hidden;">
-        <figure class="lighten"><img src="images/blog-image2.jpg" alt="Helm article preview" style="width:100%; aspect-ratio:16/10; object-fit:cover;"></figure>
-        <div style="padding: var(--space-4);">
-          <div class="card-kicker" style="display:flex; gap:var(--space-2); align-items:center;"><span>Jun 10, 2022</span><span class="tag tag-neutral">Helm</span></div>
-          <h3 class="card-title" style="font-size:20px; margin: var(--space-2) 0;"><a href="helm-chart.html">Helm Library Charts and Helm Unit Test</a></h3>
-          <p class="card-body">Notes on building reusable Helm library chart templates and testing rendered manifests with helm-unittest.</p>
-          <a href="helm-chart.html" style="display:inline-flex; align-items:center; gap:6px; margin-top:var(--space-3); font-size:14px;">Read article <svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg></a>
-        </div>
-      </article>
-
-      <article class="card elev-sm" style="display:flex; flex-direction:column; padding:0; overflow:hidden;">
-        <figure class="lighten"><img src="images/blog-image5.jpg" alt="Kubernetes multicluster article preview" style="width:100%; aspect-ratio:16/10; object-fit:cover;"></figure>
-        <div style="padding: var(--space-4);">
-          <div class="card-kicker" style="display:flex; gap:var(--space-2); align-items:center;"><span>May 30, 2017</span><span class="tag tag-neutral">Networking</span></div>
-          <h3 class="card-title" style="font-size:20px; margin: var(--space-2) 0;"><a href="k8s-multicluster-with-kind-and-cilium.html">Kubernetes Multicluster with Kind and Cilium</a></h3>
-          <p class="card-body">Local multicluster Kubernetes notes using Kind and Cilium, focused on learning cluster connectivity patterns.</p>
-          <a href="k8s-multicluster-with-kind-and-cilium.html" style="display:inline-flex; align-items:center; gap:6px; margin-top:var(--space-3); font-size:14px;">Read article <svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg></a>
-        </div>
-      </article>
-
-    </div>
-  </section>
-
-  <section id="topics" aria-labelledby="topics-title" style="padding: 56px 0;">
-    <span class="eyebrow">Topics</span>
-    <h2 id="topics-title" style="font-size: clamp(28px,3.4vw,40px); margin: 0 0 var(--space-6);">What I write about</h2>
-
-    <div>
-      <div style="display:grid; grid-template-columns: minmax(64px,140px) minmax(0,1fr); gap: var(--space-4) clamp(24px,4vw,72px); align-items:baseline; padding: var(--space-4) 0; border-top: 1px solid var(--color-divider);">
-        <p style="font-family: var(--font-heading); font-size:15px; color: var(--color-accent); margin:0;">01</p>
-        <div><h3 style="font-size:22px; margin:0 0 6px;">Kubernetes</h3><p style="margin:0; color: color-mix(in srgb, var(--color-text) 78%, transparent); max-width:60ch;">EKS, autoscaling, networking, GitOps, and operating clusters in real environments.</p></div>
-      </div>
-      <div style="display:grid; grid-template-columns: minmax(64px,140px) minmax(0,1fr); gap: var(--space-4) clamp(24px,4vw,72px); align-items:baseline; padding: var(--space-4) 0; border-top: 1px solid var(--color-divider);">
-        <p style="font-family: var(--font-heading); font-size:15px; color: var(--color-accent); margin:0;">02</p>
-        <div><h3 style="font-size:22px; margin:0 0 6px;">Automation</h3><p style="margin:0; color: color-mix(in srgb, var(--color-text) 78%, transparent); max-width:60ch;">n8n, Slack workflows, internal tooling, and secure integration patterns.</p></div>
-      </div>
-      <div style="display:grid; grid-template-columns: minmax(64px,140px) minmax(0,1fr); gap: var(--space-4) clamp(24px,4vw,72px); align-items:baseline; padding: var(--space-4) 0; border-top: 1px solid var(--color-divider);">
-        <p style="font-family: var(--font-heading); font-size:15px; color: var(--color-accent); margin:0;">03</p>
-        <div><h3 style="font-size:22px; margin:0 0 6px;">AI Tooling</h3><p style="margin:0; color: color-mix(in srgb, var(--color-text) 78%, transparent); max-width:60ch;">MCP gateways, agent tools, client configuration, and governed access to real systems.</p></div>
-      </div>
-      <div style="display:grid; grid-template-columns: minmax(64px,140px) minmax(0,1fr); gap: var(--space-4) clamp(24px,4vw,72px); align-items:baseline; padding: var(--space-4) 0; border-top: 1px solid var(--color-divider);">
-        <p style="font-family: var(--font-heading); font-size:15px; color: var(--color-accent); margin:0;">04</p>
-        <div><h3 style="font-size:22px; margin:0 0 6px;">Cloud Security</h3><p style="margin:0; color: color-mix(in srgb, var(--color-text) 78%, transparent); max-width:60ch;">Ingress control, WAF boundaries, secret handling, and practical production guardrails.</p></div>
-      </div>
-      <div style="display:grid; grid-template-columns: minmax(64px,140px) minmax(0,1fr); gap: var(--space-4) clamp(24px,4vw,72px); align-items:baseline; padding: var(--space-4) 0; border-top: 1px solid var(--color-divider); border-bottom: 1px solid var(--color-divider);">
-        <p style="font-family: var(--font-heading); font-size:15px; color: var(--color-accent); margin:0;">05</p>
-        <div><h3 style="font-size:22px; margin:0 0 6px;">Engineering Notes</h3><p style="margin:0; color: color-mix(in srgb, var(--color-text) 78%, transparent); max-width:60ch;">Debug stories, migration notes, and decisions that are useful to revisit later.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="about" aria-labelledby="about-title" style="padding: 56px 0 72px; display:grid; grid-template-columns: minmax(0,5fr) minmax(0,7fr); gap: var(--space-6) clamp(24px,5vw,96px); align-items:center;">
-    <figure class="lighten">
-      <img src="images/thi-hero-bg.jpg" alt="Thi about-page portrait" style="width:100%; aspect-ratio: 4/5; object-fit:cover; border-radius: 14px;">
-    </figure>
-    <div>
-      <span class="eyebrow">About</span>
-      <h2 id="about-title" style="font-size: clamp(28px,3.4vw,40px); margin: 0 0 var(--space-4);">Thi</h2>
-      <p style="font-size:16px; line-height:1.65; max-width:60ch; color: color-mix(in srgb, var(--color-text) 82%, transparent); margin:0;">I work on DevOps, cloud infrastructure, automation, and internal platforms. This blog is my place to turn daily engineering work into readable notes: what problem appeared, what tradeoff mattered, and what I would keep for next time.</p>
-      <div style="display:flex; gap: var(--space-3); margin-top: var(--space-6); flex-wrap: wrap;">
-        <a href="contact.html" class="btn btn-primary">Contact</a>
-        <a href="gallery.html" class="btn btn-ghost">Gallery</a>
-        <a href="https://dinhdobathi.com" class="btn btn-ghost">CV</a>
-      </div>
-    </div>
-  </section>
-
+<!-- Section 3: Engineering Archives & Research (Desktop Grid with Filter Bar) -->
+<section class="w-full py-space-2xl" id="production-log">
+<div class="max-w-7xl mx-auto px-gutter">
+<!-- Section Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-space-xl gap-4">
+<div>
+<div class="flex items-center gap-2 mb-1 text-primary">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+<span class="font-label-code text-label-code tracking-wider uppercase font-semibold">PRODUCTION LOG</span>
 </div>
-</main>
-
-<hr class="hr">
-
-<footer style="max-width: 1200px; margin: 0 auto; padding: var(--space-6) clamp(20px,5vw,72px); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap: var(--space-3); font-size:13px; color: color-mix(in srgb, var(--color-text) 55%, transparent);">
-  <span>Copyright &copy; 2026 DinhDoBaThi</span>
-  <div style="display:flex; gap: var(--space-4);">
-    <a href="contact.html">Contact</a>
-    <a href="gallery.html">Gallery</a>
-    <a href="https://dinhdobathi.com">CV</a>
-  </div>
-</footer>
-
-<script src="js/hero-network.js"></script>
-</body>
-</html>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Engineering Archives &amp; Research</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl mt-1">
+            Zero theoretical filler. Production postmortems, architecture patterns, and reproducible infrastructure setups.
+          </p>
+</div>
+<div class="font-label-code text-label-code text-outline">
+          SHOWING 5 ARCHIVED BLUEPRINTS
+        </div>
+</div>
+<!-- Horizontal Filter Bar (visual only — matches the source concept, not wired) -->
+<div class="flex flex-wrap items-center gap-2 pb-space-lg mb-space-md">
+<button class="px-space-md py-1.5 rounded-full bg-secondary-container text-on-secondary font-label-code text-label-code font-semibold shadow-sm flex items-center gap-2" type="button">
+<span class="w-2 h-2 rounded-full bg-on-secondary animate-pulse"></span>
+<span>All Articles (6)</span>
+</button>
+<button class="px-space-md py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface font-label-code text-label-code transition-colors" type="button">
+          Kubernetes (2)
+        </button>
+<button class="px-space-md py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface font-label-code text-label-code transition-colors" type="button">
+          Automation (1)
+        </button>
+<button class="px-space-md py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface font-label-code text-label-code transition-colors" type="button">
+          AI Tooling (1)
+        </button>
+<button class="px-space-md py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface font-label-code text-label-code transition-colors" type="button">
+          GitOps (1)
+        </button>
+<button class="px-space-md py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface font-label-code text-label-code transition-colors" type="button">
+          Networking (1)
+        </button>
+</div>
+<!-- Technical Card Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-lg">
+<!-- Article Card 1: MCPJungle -->
+<a class="flex flex-col justify-between rounded-xl bg-surface-container-low p-space-lg shadow-lg hover:shadow-primary-container/10 transition-all duration-300 group" href="mcpjungle.html">
+<div>
+<!-- Metadata Row -->
+<div class="flex items-center justify-between text-outline font-label-code text-[12px] mb-space-sm">
+<span class="text-primary font-semibold">AI TOOLING</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 6 min read
+              </span>
+</div>
+<!-- Title -->
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-secondary-fixed transition-colors mb-space-sm leading-snug">
+              MCPJungle: One Gateway for All My MCP Servers
+            </h3>
+<!-- Description -->
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md line-clamp-3">
+              Moving away from fragmented JSON configurations duplicated across Claude Desktop, Cursor, and Codex CLI. How to deploy a centralized, self-hosted proxy with RBAC, scoped API tokens, and zero-trust logging.
+            </p>
+<!-- Tags -->
+<div class="flex flex-wrap gap-1.5 mb-space-md">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code text-[11px]">RBAC</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code text-[11px]">Model Context Protocol</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code text-[11px]">Self-Hosted</span>
+</div>
+</div>
+<!-- Card Footer -->
+<div class="pt-space-md flex items-center justify-between text-outline font-label-code text-[12px]">
+<span>May 20, 2026</span>
+<span class="flex items-center gap-1 text-secondary group-hover:translate-x-1 transition-transform">
+<span>Read Deep Dive</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</span>
+</div>
+</a>
+<!-- Article Card 2: Karpenter with AWS EKS -->
+<a class="flex flex-col justify-between rounded-xl bg-surface-container-low p-space-lg shadow-lg hover:shadow-primary-container/10 transition-all duration-300 group" href="karpenter.html">
+<div>
+<!-- Metadata Row -->
+<div class="flex items-center justify-between text-outline font-label-code text-[12px] mb-space-sm">
+<span class="text-secondary-fixed font-semibold">KUBERNETES</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 9 min read
+              </span>
+</div>
+<!-- Title -->
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-secondary-fixed transition-colors mb-space-sm leading-snug">
+              Karpenter with AWS EKS: Just-in-Time Auto-Provisioning
+            </h3>
+<!-- Description -->
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md line-clamp-3">
+              Benchmarking Karpenter against traditional Cluster Autoscaler node groups. Deep dive into instance type diversity, rapid bin-packing calculations, and handling Spot EC2 interruptions without degraded pods.
+            </p>
+<!-- Tags -->
+<div class="flex flex-wrap gap-1.5 mb-space-md">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code text-[11px]">AWS EKS</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code text-[11px]">Provisioning</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code text-[11px]">Spot vs On-Demand</span>
+</div>
+</div>
+<!-- Card Footer -->
+<div class="pt-space-md flex items-center justify-between text-outline font-label-code text-[12px]">
+<span>Mar 3, 2023</span>
+<span class="flex items-center gap-1 text-secondary group-hover:translate-x-1 transition-transform">
+<span>Read Deep Dive</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</span>
+</div>
+</a>
+<!-- Article Card 3: Cluster API and ArgoCD -->
+<a class="flex flex-col justify-between rounded-xl bg-surface-container-low p-space-lg shadow-lg hover:shadow-primary-container/10 transition-all duration-300 group" href="create-and-manage-kubernetes-clusters-with-cluster-api-and-argocd.html">
+<div>
+<!-- Metadata Row -->
+<div class="flex items-center justify-between text-outline font-label-code text-[12px] mb-space-sm">
+<span class="text-primary font-semibold">GITOPS</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 11 min read
+              </span>
+</div>
+<!-- Title -->
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-secondary-fixed transition-colors mb-space-sm leading-snug">
+              Create &amp; Manage Clusters with Cluster API &amp; ArgoCD
+            </h3>
+<!-- Description -->
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md line-clamp-3">
+              Deploying multi-region production Kubernetes infrastructure from a unified Git commit. Integrating declarative CAPI manifests with ArgoCD continuous synchronization workflows.
+            </p>
+<!-- Tags -->
+<div class="flex flex-wrap gap-1.5 mb-space-md">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code text-[11px]">CAPI</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code text-[11px]">ArgoCD</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code text-[11px]">GitOps Multi-Cluster</span>
+</div>
+</div>
+<!-- Card Footer -->
+<div class="pt-space-md flex items-center justify-between text-outline font-label-code text-[12px]">
+<span>Sep 20, 2022</span>
+<span class="flex items-center gap-1 text-secondary group-hover:translate-x-1 transition-transform">
+<span>Read Deep Dive</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</span>
+</div>
+</a>
+<!-- Article Card 4: Helm Library Charts -->
+<a class="flex flex-col justify-between rounded-xl bg-surface-container-low p-space-lg shadow-lg hover:shadow-primary-container/10 transition-all duration-300 group" href="helm-chart.html">
+<div>
+<!-- Metadata Row -->
+<div class="flex items-center justify-between text-outline font-label-code text-[12px] mb-space-sm">
+<span class="text-tertiary-fixed font-semibold">HELM &amp; CI</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 6 min read
+              </span>
+</div>
+<!-- Title -->
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-secondary-fixed transition-colors mb-space-sm leading-snug">
+              Helm Library Charts and Helm Unit Test Patterns
+            </h3>
+<!-- Description -->
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md line-clamp-3">
+              Architecting reusable boilerplate across 40+ internal microservices without code drift. Writing rigorous unit test suites in CI pipelines to validate edge-case template renderings before deploy.
+            </p>
+<!-- Tags -->
+<div class="flex flex-wrap gap-1.5 mb-space-md">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code text-[11px]">Template DRY</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code text-[11px]">helm-unittest</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code text-[11px]">CI Pipeline</span>
+</div>
+</div>
+<!-- Card Footer -->
+<div class="pt-space-md flex items-center justify-between text-outline font-label-code text-[12px]">
+<span>Jun 10, 2022</span>
+<span class="flex items-center gap-1 text-secondary group-hover:translate-x-1 transition-transform">
+<span>Read Deep Dive</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</span>
+</div>
+</a>
+<!-- Article Card 5: Kubernetes Multicluster with Kind and Cilium -->
+<a class="flex flex-col justify-between rounded-xl bg-surface-container-low p-space-lg shadow-lg hover:shadow-primary-container/10 transition-all duration-300 group" href="k8s-multicluster-with-kind-and-cilium.html">
+<div>
+<!-- Metadata Row -->
+<div class="flex items-center justify-between text-outline font-label-code text-[12px] mb-space-sm">
+<span class="text-secondary font-semibold">NETWORKING</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 8 min read
+              </span>
+</div>
+<!-- Title -->
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-secondary-fixed transition-colors mb-space-sm leading-snug">
+              Kubernetes Multicluster with Kind and Cilium eBPF
+            </h3>
+<!-- Description -->
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md line-clamp-3">
+              Local multicluster lab orchestration using Kind and Cilium ClusterMesh. Dissecting eBPF packet routing, service discovery across cluster borders, and avoiding iptables connection tracking overhead.
+            </p>
+<!-- Tags -->
+<div class="flex flex-wrap gap-1.5 mb-space-md">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code text-[11px]">Cilium eBPF</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code text-[11px]">ClusterMesh</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code text-[11px]">Linux Namespaces</span>
+</div>
+</div>
+<!-- Card Footer -->
+<div class="pt-space-md flex items-center justify-between text-outline font-label-code text-[12px]">
+<span>May 30, 2017</span>
+<span class="flex items-center gap-1 text-secondary group-hover:translate-x-1 transition-transform">
+<span>Read Deep Dive</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</span>
+</div>
+</a>
+<!-- Sixth Placeholder / Future Spec Slot (not a real page — deliberately unlinked) -->
+<div class="flex flex-col justify-between rounded-xl bg-surface-container-lowest p-space-lg shadow-md border-dashed border-2 border-surface-variant/40">
+<div>
+<div class="flex items-center justify-between text-outline font-label-code text-[12px] mb-space-sm">
+<span class="text-secondary-container">IN PROGRESS</span>
+<span>DRAFT STAGE</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-outline mb-space-sm">
+              eBPF Observability at Scale: Eliminating Sidecar Overhead
+            </h3>
+<p class="font-body-sm text-body-sm text-outline/80 mb-space-md">
+              Extracting L7 application metrics without injecting Envoy proxies. Benchmarking CPU cycle recovery on high-density node pools.
+            </p>
+</div>
+<div class="pt-space-md flex items-center justify-between font-label-code text-[12px] text-outline">
+<span>TARGET: Q3 2026</span>
+<span class="text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">hourglass_top</span>
+<span>Compiling</span>
+</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 4: Taxonomy Matrix ("What I Write About") -->
+<section class="w-full bg-surface-container-lowest/80 py-space-2xl" id="taxonomy-matrix">
+<div class="max-w-7xl mx-auto px-gutter">
+<div class="flex items-center justify-between mb-space-xl">
+<div>
+<span class="font-label-caps text-label-caps text-primary tracking-widest uppercase">DOMAIN EXPERTISE</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-1">What I Write About</h2>
+</div>
+<div class="hidden sm:block font-label-code text-label-code text-outline">
+          5 ARCHITECTURAL DOMAINS
+        </div>
+</div>
+<!-- 5-Column Desktop Taxonomy Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-space-md">
+<!-- 01 Kubernetes -->
+<div class="p-space-lg rounded-xl bg-surface-container-low flex flex-col justify-between shadow-md hover:bg-surface-container transition-colors group">
+<div>
+<span class="font-label-code text-label-code text-secondary-fixed block mb-space-sm font-bold">01 // CLUSTERS</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-space-sm group-hover:text-secondary-fixed transition-colors">
+              Kubernetes
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              AWS EKS, Karpenter just-in-time provisioning, Cilium CNI, GitOps rollouts, and multi-tenant isolation.
+            </p>
+</div>
+<div class="mt-space-lg pt-space-sm flex items-center justify-between text-outline font-label-code text-[11px]">
+<span>2 ARTICLES</span>
+<span class="material-symbols-outlined text-[16px] text-primary">dns</span>
+</div>
+</div>
+<!-- 02 Automation -->
+<div class="p-space-lg rounded-xl bg-surface-container-low flex flex-col justify-between shadow-md hover:bg-surface-container transition-colors group">
+<div>
+<span class="font-label-code text-label-code text-primary block mb-space-sm font-bold">02 // WORKFLOWS</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-space-sm group-hover:text-primary transition-colors">
+              Automation
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              Self-hosted n8n pipelines, ChatOps bots, internal developer platforms, and secure webhook gateways.
+            </p>
+</div>
+<div class="mt-space-lg pt-space-sm flex items-center justify-between text-outline font-label-code text-[11px]">
+<span>1 ARTICLE</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">autorenew</span>
+</div>
+</div>
+<!-- 03 AI Tooling -->
+<div class="p-space-lg rounded-xl bg-surface-container-low flex flex-col justify-between shadow-md hover:bg-surface-container transition-colors group">
+<div>
+<span class="font-label-code text-label-code text-secondary block mb-space-sm font-bold">03 // PROTOCOLS</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-space-sm group-hover:text-secondary-fixed transition-colors">
+              AI Tooling
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              Model Context Protocol (MCP) gateways, agent sandboxes, RBAC credential handling, and local inference infra.
+            </p>
+</div>
+<div class="mt-space-lg pt-space-sm flex items-center justify-between text-outline font-label-code text-[11px]">
+<span>1 ARTICLE</span>
+<span class="material-symbols-outlined text-[16px] text-primary">psychology</span>
+</div>
+</div>
+<!-- 04 Cloud Security -->
+<div class="p-space-lg rounded-xl bg-surface-container-low flex flex-col justify-between shadow-md hover:bg-surface-container transition-colors group">
+<div>
+<span class="font-label-code text-label-code text-tertiary block mb-space-sm font-bold">04 // DEFENSE</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-space-sm group-hover:text-tertiary transition-colors">
+              Cloud Security
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              Ingress perimeter control, Cloudflare WAF, mutual TLS (mTLS), secrets rotation, and hardening VPC topologies.
+            </p>
+</div>
+<div class="mt-space-lg pt-space-sm flex items-center justify-between text-outline font-label-code text-[11px]">
+<span>1 ARTICLE</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">shield</span>
+</div>
+</div>
+<!-- 05 Engineering Notes -->
+<div class="p-space-lg rounded-xl bg-surface-container-low flex flex-col justify-between shadow-md hover:bg-surface-container transition-colors group">
+<div>
+<span class="font-label-code text-label-code text-on-surface-variant block mb-space-sm font-bold">05 // RETROS</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-space-sm group-hover:text-on-surface transition-colors">
+              Engineering Notes
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              Real-world incident retro postmortems, migration war stories, kernel-level troubleshooting, and runbooks.
+            </p>
+</div>
+<div class="mt-space-lg pt-space-sm flex items-center justify-between text-outline font-label-code text-[11px]">
+<span>1 ARTICLE</span>
+<span class="material-symbols-outlined text-[16px] text-primary">history_edu</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 5: Author Profile & Technical Newsletter Dispatch Console -->
+<section class="w-full py-space-2xl" id="about">
+<div class="max-w-7xl mx-auto px-gutter">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl">
+<!-- Author Profile Card (6 cols) -->
+<div class="lg:col-span-6 rounded-xl bg-surface-container-low p-space-xl shadow-xl flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-start gap-space-md">
+<!-- Micro Profile Visual / Avatar -->
+<div class="relative shrink-0">
+<img alt="Thi profile" class="w-16 h-16 rounded-xl object-cover" src="images/thi-profile.jpg"/>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-secondary-container border-2 border-surface-container-low flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-surface-container-lowest"></span>
+</div>
+</div>
+<!-- Profile Info -->
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">Dinh Do Ba Thi</h3>
+<span class="material-symbols-outlined text-secondary text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<p class="font-label-code text-label-code text-primary">Senior DevOps &amp; Site Reliability Engineer</p>
+<p class="font-body-sm text-body-sm text-outline">Operating high-concurrency cloud infrastructure, distributed Kubernetes clusters, and automated developer platforms.</p>
+</div>
+</div>
+<!-- Quick Navigation / Bio Action Links -->
+<div class="grid grid-cols-3 gap-3 pt-space-xl font-label-code text-label-code">
+<a class="p-space-sm rounded-lg bg-surface-container text-center hover:bg-surface-container-high hover:text-secondary-fixed transition-colors" href="https://dinhdobathi.com" rel="noopener" target="_blank">
+<span class="block text-on-surface font-semibold">Curriculum Vitae</span>
+<span class="text-outline text-[11px]">SRE Experience</span>
+</a>
+<a class="p-space-sm rounded-lg bg-surface-container text-center hover:bg-surface-container-high hover:text-secondary-fixed transition-colors" href="https://dinhdobathi.com" rel="noopener" target="_blank">
+<span class="block text-on-surface font-semibold">Engineering Bio</span>
+<span class="text-outline text-[11px]">Stack &amp; Philosophy</span>
+</a>
+<a class="p-space-sm rounded-lg bg-surface-container text-center hover:bg-surface-container-high hover:text-secondary-fixed transition-colors" href="contact.html">
+<span class="block text-on-surface font-semibold">Contact</span>
+<span class="text-outline text-[11px]">Get in touch</span>
+</a>
+</div>
+</div>
+<!-- Technical Newsletter Dispatch Console (6 cols) -->
+<div class="lg:col-span-6 rounded-xl bg-surface-container-low p-space-xl shadow-xl flex flex-col justify-between relative overflow-hidden">
+<div class="absolute -right-8 -bottom-8 w-40 h-40 bg-secondary-container/10 rounded-full blur-2xl pointer-events-none"></div>
+<div>
+<div class="flex items-center gap-2 mb-2 text-secondary">
+<span class="material-symbols-outlined text-[18px]">outgoing_mail</span>
+<span class="font-label-code text-label-code tracking-wider uppercase font-semibold">SRE DISPATCH // SUBSCRIBER STREAM</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">
+              Deep Technical Transmissions to Your Inbox
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-lg leading-relaxed">
+              No generic product digests, zero promotional spam. Sent once a month: deep architectural postmortems, verified Kubernetes manifest patterns, and production telemetry tips.
+            </p>
+</div>
+<!-- Subscription Input Form with Terminal Aesthetic (no real subscription backend) -->
+<form class="space-y-3" onsubmit="event.preventDefault(); document.getElementById('sub-feedback').classList.remove('hidden');">
+<div class="flex flex-col sm:flex-row items-center gap-2">
+<div class="relative w-full">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-outline font-label-code text-[12px] pointer-events-none">$</span>
+<input class="w-full pl-7 pr-4 py-3 rounded-lg bg-surface-container-lowest text-on-surface font-body-sm text-body-sm placeholder:text-outline/50 focus:outline-none focus:ring-2 focus:ring-secondary-container transition-all shadow-inner" placeholder="engineer@domain.com" required="" type="email"/>
+</div>
+<button class="w-full sm:w-auto shrink-0 px-space-lg py-3 rounded-lg bg-primary-container text-on-primary font-headline-sm text-body-sm shadow-md hover:brightness-110 transition-all" type="submit">
+                Subscribe
+              </button>
+</div>
+<!-- Terminal Disclaimer -->
+<div class="flex items-center justify-between text-outline font-label-code text-[11px] pt-1">
+<span>ZERO SPAM • UNSUBSCRIBE ANYTIME</span>
+</div>
+<!-- Confirmation message hidden by default -->
+<div class="hidden p-2 rounded bg-secondary-container/15 text-secondary font-label-code text-[12px]" id="sub-feedback">
+              ✓ No subscription backend is wired up yet.
+            </div>
+</form>
+</div>
+</div>
+</div>
+</section>
+</div></main><footer class="w-full bg-surface-container-lowest border-t border-outline-variant/20 pt-space-2xl pb-space-xl text-on-surface-variant"><div class="max-w-7xl mx-auto px-gutter"><div class="grid grid-cols-1 md:grid-cols-4 gap-space-xl pb-space-xl border-b border-outline-variant/20"><div class="md:col-span-2 space-y-space-md"><div class="flex items-center gap-2"><span class="font-headline-sm text-headline-sm text-on-surface font-bold">THI // JOURNAL</span></div><p class="font-body-sm text-body-sm text-outline max-w-md">Living engineering journal focused on high-scale distributed systems, incident post-mortems, Kubernetes topologies, and reliability patterns.</p></div><div><h4 class="font-label-caps text-label-caps text-on-surface uppercase tracking-wider mb-space-md">Directives</h4><ul class="space-y-space-sm font-body-sm text-body-sm"><li class="flex items-center"><a class="text-on-surface-variant hover:text-secondary transition-colors" href="#production-log">Production Log (Articles)</a></li><li class="flex items-center"><a class="text-on-surface-variant hover:text-secondary transition-colors" href="#featured-walkthrough">Architecture Blueprints</a></li><li class="flex items-center"><a class="text-on-surface-variant hover:text-secondary transition-colors" href="#taxonomy-matrix">Topic Index &amp; Tags</a></li><li class="flex items-center"><a class="text-on-surface-variant hover:text-secondary transition-colors" href="gallery.html">Gallery</a></li></ul></div><div><h4 class="font-label-caps text-label-caps text-on-surface uppercase tracking-wider mb-space-md">Transmissions</h4><ul class="space-y-space-sm font-body-sm text-body-sm"><li class="flex items-center"><a class="text-on-surface-variant hover:text-on-surface transition-colors" href="contact.html">Contact</a></li><li class="flex items-center"><a class="text-on-surface-variant hover:text-on-surface transition-colors" href="https://dinhdobathi.com" rel="noopener" target="_blank">Staff SRE Resume / CV</a></li><li class="flex items-center"><a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#about">Bio &amp; Engineering Ethics</a></li></ul></div></div><div class="pt-space-lg flex flex-col md:flex-row items-center justify-between gap-4 font-label-code text-label-code text-outline"><div class="flex items-center gap-2"><span>© 2026 DinhDoBaThi.</span></div><div class="flex items-center gap-space-lg"><span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span> EDGE LATENCY: 14ms</span><span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px]">shield</span> TLS 1.3 AES-256</span></div></div></div></footer></body></html>
