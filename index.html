@@ -2,7 +2,7 @@
 
 <html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta name="description" content="Thi's personal tech blog on DevOps, Kubernetes, automation, AI tooling, and infrastructure engineering.">
-<meta name="keywords" content="Thi, DevOps, Kubernetes, automation, n8n, MCPJungle, Karpenter, Helm, infrastructure">
+<meta name="keywords" content="Thi, DevOps, Kubernetes, automation, n8n, MCPJungle, LaunchDarkly, Karpenter, Helm, infrastructure">
 <meta name="author" content="Thi">
 <title>Thi - Personal Tech Blog</title>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;family=Manrope:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
@@ -339,17 +339,17 @@
           </p>
 </div>
 <div class="font-label-code text-label-code text-outline">
-          SHOWING 5 ARCHIVED BLUEPRINTS
+          SHOWING 6 ARCHIVED BLUEPRINTS
         </div>
 </div>
 <!-- Horizontal Filter Bar (visual only — matches the source concept, not wired) -->
 <div class="flex flex-wrap items-center gap-2 pb-space-lg mb-space-md">
 <button class="px-space-md py-1.5 rounded-full bg-secondary-container text-on-secondary font-label-code text-label-code font-semibold shadow-sm flex items-center gap-2" type="button">
 <span class="w-2 h-2 rounded-full bg-on-secondary animate-pulse"></span>
-<span>All Articles (6)</span>
+<span>All Articles (7)</span>
 </button>
 <button class="px-space-md py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface font-label-code text-label-code transition-colors" type="button">
-          Kubernetes (2)
+          Kubernetes (3)
         </button>
 <button class="px-space-md py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface font-label-code text-label-code transition-colors" type="button">
           Automation (1)
@@ -366,6 +366,40 @@
 </div>
 <!-- Technical Card Grid -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-lg">
+<!-- Article Card 0: LaunchDarkly manifest mutator -->
+<a class="flex flex-col justify-between rounded-xl bg-surface-container-low p-space-lg shadow-lg hover:shadow-primary-container/10 transition-all duration-300 group" href="launchdarkly-manifest-mutator.html">
+<div>
+<!-- Metadata Row -->
+<div class="flex items-center justify-between text-outline font-label-code text-[12px] mb-space-sm">
+<span class="text-secondary-fixed font-semibold">KUBERNETES</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 9 min read
+              </span>
+</div>
+<!-- Title -->
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-secondary-fixed transition-colors mb-space-sm leading-snug">
+              Feature Flags for Kubernetes Manifests: Reviving a LaunchDarkly Mutator
+            </h3>
+<!-- Description -->
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md line-clamp-3">
+              A Go service that rewrites every app's manifests from LaunchDarkly flags before kubectl apply. The bugs I found, what I fixed, and how to install it on a fresh cluster.
+            </p>
+<!-- Tags -->
+<div class="flex flex-wrap gap-1.5 mb-space-md">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code text-[11px]">LaunchDarkly</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code text-[11px]">Karpenter</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-code text-[11px]">GitHub Actions</span>
+</div>
+</div>
+<!-- Card Footer -->
+<div class="pt-space-md flex items-center justify-between text-outline font-label-code text-[12px]">
+<span>Nov 18, 2026</span>
+<span class="flex items-center gap-1 text-secondary group-hover:translate-x-1 transition-transform">
+<span>Read Deep Dive</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</span>
+</div>
+</a>
 <!-- Article Card 1: MCPJungle -->
 <a class="flex flex-col justify-between rounded-xl bg-surface-container-low p-space-lg shadow-lg hover:shadow-primary-container/10 transition-all duration-300 group" href="mcpjungle.html">
 <div>
