@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="How I brought an old LaunchDarkly-driven Kubernetes manifest mutator back to life on a fresh cluster, and the bugs I found on the way.">
+<meta name="keywords" content="Kubernetes, LaunchDarkly, feature flags, manifest mutation, GitHub Actions, Go, Helm">
+<meta name="author" content="Thi">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<title>Feature Flags for Kubernetes Manifests: Reviving a LaunchDarkly Mutator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/obsidian.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="js/tailwind-config.js"></script>
+</head>
+
+<body class="bg-background font-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container">
+<a class="skip-link" href="#article">Skip to article</a>
+
+<header class="fixed top-0 left-0 right-0 w-full z-50 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30"><div class="h-16 max-w-7xl mx-auto px-gutter flex items-center justify-between gap-4"><div class="flex items-center gap-4 shrink-0"><a class="flex items-center gap-3 group" href="index.html"><div class="h-8 w-8 rounded-lg bg-surface-container-high flex items-center justify-center shrink-0"><span class="font-label-code text-label-code text-secondary font-bold tracking-tight">T//</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none group-hover:text-primary transition-colors">THI</span><span class="font-label-code text-label-code text-outline leading-tight">SRE.SYS.LOG</span></div></a></div><nav class="hidden lg:flex items-center gap-1"><a class="px-space-md py-space-xs rounded transition-colors bg-surface-container-high text-primary border border-outline-variant/60 font-semibold" href="index.html#production-log">Articles</a><a class="px-space-md py-space-xs rounded font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="index.html#taxonomy-matrix">Topics</a><a class="px-space-md py-space-xs rounded font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="index.html#featured-walkthrough">Architecture</a><a class="px-space-md py-space-xs rounded font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="index.html#about">About</a></nav><div class="flex items-center gap-space-sm shrink-0"><a aria-label="RSS Feed" class="w-8 h-8 rounded-lg flex items-center justify-center bg-surface-container-low border border-outline-variant/40 text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-container/50 transition-colors" href="#"><span class="material-symbols-outlined text-[18px]">rss_feed</span></a><a class="hidden sm:inline-flex items-center gap-1.5 px-space-md py-space-xs rounded-lg bg-surface-container text-on-surface border border-outline-variant hover:border-secondary-container hover:text-secondary transition-all font-label-code text-label-code" href="https://dinhdobathi.com" rel="noopener" target="_blank"><span class="material-symbols-outlined text-[16px]">description</span>CV</a><img alt="Thi profile" class="w-8 h-8 rounded-full object-cover" src="images/thi-profile.jpg"/></div></div></header>
+
+<main id="article">
+     <section class="article-hero">
+          <div class="article-hero-grid article-diagram-hero-grid">
+               <div>
+                    <div class="article-kicker">Kubernetes / Feature Flags / Platform</div>
+                    <h1>Feature Flags for Kubernetes Manifests: Reviving a LaunchDarkly Mutator</h1>
+                    <p class="article-deck">A platform team I worked with used LaunchDarkly to decide how every workload got scheduled. I took that tool, moved it to my own GitHub, fixed the bugs that would have bitten a new install, and planned how to run it on a fresh cluster.</p>
+                    <div class="article-meta-row">
+                         <span class="article-pill">Nov 18, 2026</span>
+                         <span class="article-pill">9 min read</span>
+                         <span class="article-pill">Go + LaunchDarkly + Helm</span>
+                    </div>
+               </div>
+
+               <aside class="article-hero-card article-hero-diagram-card" aria-label="Article summary">
+                    <img src="images/dmm-architecture.png" alt="Deployment manifest mutator architecture: GitHub deploy action, dmm API in the cluster, LaunchDarkly flags">
+                    <div>
+                         <strong>Core idea</strong>
+                         <span>Platform rules live in feature flags, and the deploy pipeline applies them to every app's manifests.</span>
+                    </div>
+               </aside>
+          </div>
+     </section>
+
+     <div class="article-shell">
+          <aside class="article-sidebar" aria-label="Article navigation">
+               <div class="article-author">
+                    <img src="images/thi-profile.jpg" alt="Thi">
+                    <strong>Thi</strong>
+                    <p>DevOps, cloud infrastructure, automation, and internal platform notes.</p>
+               </div>
+               <nav class="article-toc">
+                    <strong>In this post</strong>
+                    <a href="#idea">The idea</a>
+                    <a href="#how">How it works</a>
+                    <a href="#flags">Where LaunchDarkly fits</a>
+                    <a href="#bugs">What I found</a>
+                    <a href="#webhook">Why not a webhook?</a>
+                    <a href="#fixes">What I changed</a>
+                    <a href="#fresh">Installing on a fresh cluster</a>
+                    <a href="#lessons">What I learned</a>
+               </nav>
+          </aside>
+
+          <article class="article-content">
+               <section id="idea" class="article-section">
+                    <h2>The idea</h2>
+                    <p>On a big shared EKS cluster, the platform team wants a say in how every workload runs. Which Karpenter nodepool it lands on, which tolerations it carries, whether it gets a PodDisruptionBudget, how it spreads across zones. Product teams own their own Helm charts and manifests, and asking every team to copy the same block of YAML never works for long.</p>
+                    <p>So the team I worked with built the <strong>deployment manifest mutator</strong> (DMM). Every deploy sends its rendered manifests through a small Go service. The service asks LaunchDarkly what the platform rules are for this cluster, namespace and app, rewrites the manifests, and the pipeline applies the result.</p>
+                    <div class="article-callout">
+                         <p><strong>Why feature flags?</strong> A platform engineer can move one namespace to a new nodepool, or roll a topology spread rule out to 10% of apps, from the LaunchDarkly UI. Nobody opens a pull request in every app repo.</p>
+                    </div>
+                    <p>After I left, I still had a copy of the two repos and wanted to run it again on my own cluster with a LaunchDarkly trial. That turned out to be more work than I expected.</p>
+               </section>
+
+               <section id="how" class="article-section">
+                    <h2>How it works</h2>
+                    <img class="article-inline-image article-diagram-image" src="images/dmm-architecture.png" alt="DMM flow from developer push through the deploy action, the dmm API and LaunchDarkly, to kubectl apply">
+                    <p>There are two repos. <code>deployment-manifest-packages</code> is a Go library that holds the mutation logic, one package per resource type. <code>deployment-manifest-mutator</code> is the service around it: an HTTP API, a CLI called <code>dmm-client</code>, a Helm chart and the CI workflows.</p>
+                    <div class="article-diagram">Developer pushes app code
+          |
+          v
+Shared deploy action (GitHub Actions template)
+  - download dmm-client
+  - dmm-client checks the ConfigMutator flag
+  - POST manifests to dmm API /mutate
+          |
+          v
+dmm API (in the cluster)
+  - evaluate 12 flags per resource
+  - rewrite Deployment, Rollout, CronJob, HPA, PDB
+          |
+          v
+write .cicd/k8s/final/
+          |
+          v
+kubectl apply final/</div>
+                    <p>Developers never call DMM themselves. The shared deploy action that every app pipeline uses runs <code>dmm-client</code> right before <code>kubectl apply</code>, so it was invisible to most teams. The command inside the template looks like this:</p>
+                    <pre class="article-code">dmm-client k8s --cluster &lt;cluster&gt; --namespace &lt;ns&gt; --application &lt;app&gt;
+kubectl apply -f .cicd/k8s/final/</pre>
+                    <p>The API runs as a normal Deployment behind an internal ingress. It never talks to the cluster during a mutation, so it needs no RBAC. Its only secret is the LaunchDarkly server SDK key.</p>
+               </section>
+
+               <section id="flags" class="article-section">
+                    <h2>Where LaunchDarkly fits</h2>
+                    <p>Both the client and the API connect straight to LaunchDarkly's public cloud with the SDK defaults: <code>stream.launchdarkly.com</code> for live updates, <code>app.launchdarkly.com</code> as the polling fallback and <code>events.launchdarkly.com</code> for analytics. There is no relay proxy, so the pods need outbound HTTPS to <code>*.launchdarkly.com</code>.</p>
+                    <p>The client reads one master switch, <code>ConfigMutator</code>. If it is off, the client copies the manifests to <code>final/</code> unchanged. The API reads twelve flags, one per mutation, and sends cluster, namespace, resource name, <code>app</code> and <code>tier</code> as attributes, so a rule in LaunchDarkly can target any of them.</p>
+                    <div class="article-table">
+                         <table>
+                              <thead>
+                                   <tr>
+                                        <th>Flag area</th>
+                                        <th>What it changes</th>
+                                   </tr>
+                              </thead>
+                              <tbody>
+                                   <tr><td>Node selector</td><td>Pins pods to a Karpenter nodepool</td></tr>
+                                   <tr><td>Tolerations</td><td>Lets pods run on tainted nodepools</td></tr>
+                                   <tr><td>Affinity / anti-affinity</td><td>Node affinity and spreading replicas across nodes</td></tr>
+                                   <tr><td>Topology spread</td><td>Spreads pods across zones</td></tr>
+                                   <tr><td>PDB</td><td>Adds or adjusts a PodDisruptionBudget</td></tr>
+                                   <tr><td>CronJob</td><td>Scheduling and eviction settings for jobs</td></tr>
+                                   <tr><td>HPA to KEDA</td><td>Turns a queue consumer's HPA into a KEDA ScaledObject</td></tr>
+                              </tbody>
+                         </table>
+                    </div>
+               </section>
+
+               <section id="bugs" class="article-section">
+                    <h2>What I found when I read the code again</h2>
+                    <p>Both repos built. Then I ran the library tests, and the <code>deployment</code> and <code>keda</code> packages did not compile. Function signatures had changed and nobody updated the tests, so CI had been checking much less than everyone assumed. A few other problems were worse.</p>
+
+                    <h3>The client always exited 0</h3>
+                    <p>Every error in <code>dmm-client</code> was logged and then ignored. If the API was down, or returned a 500, the client still exited successfully, and the next step ran <code>kubectl apply</code> on an empty or half-written <code>final/</code> folder. A broken mutator could ship a partial deploy and the pipeline would stay green.</p>
+
+                    <h3>A new LaunchDarkly client on every request</h3>
+                    <p>Each <code>/mutate</code> call created a fresh LaunchDarkly client, which waits up to 10 seconds to initialize and downloads every flag. The KEDA path added a fixed 3 second sleep and an HTTP call with no timeout. The server's response limit was 15 seconds, so a slow day meant failed deploys.</p>
+
+                    <h3>Percentage rollouts were random</h3>
+                    <p>The LaunchDarkly context key was the flag name plus six random characters. Rules that targeted a cluster or namespace attribute still worked. A "10% of apps" rollout picked different apps on every deploy, and LaunchDarkly counted a new context on every evaluation.</p>
+
+                    <h3>One missing flag broke every deploy</h3>
+                    <p>If any of the twelve flags did not exist in an environment, the whole request failed. A flag that was off without an explicit off variation was worse: the node selector code wrote the string <code>"null"</code> as the nodepool name, and pods with that selector cannot schedule anywhere.</p>
+               </section>
+
+               <section id="webhook" class="article-section">
+                    <h2>Why not a mutating webhook?</h2>
+                    <p>My first thought for a fresh cluster was a mutating admission webhook. The API server would call DMM for every create or update, so <code>kubectl</code>, Helm and ArgoCD would all get mutated, and there would be no client to forget.</p>
+                    <p>The HPA to KEDA conversion is what stopped me. A webhook can patch the object it receives. It cannot turn a HorizontalPodAutoscaler into a ScaledObject, because that is a different resource. The CI design handles it easily since the client just writes a different file into <code>final/</code>. I kept the original CI-driven shape and wrote down the webhook as a later option for the mutations that only patch.</p>
+               </section>
+
+               <section id="fixes" class="article-section">
+                    <h2>What I changed</h2>
+                    <p>First I moved both repos to private repos under my GitHub account and renamed the Go module path everywhere. The CLI had been pinned to a January 2024 version of the library while the API used a much newer one, so I put both on the same tag. I also removed 25 MB of stale prebuilt binaries that were committed in the client folder.</p>
+                    <ul>
+                         <li><code>dmm-client</code> exits 1 on any failure: flag error, missing <code>API</code> variable, API unreachable or not 200, bad YAML, no manifests, or a write error.</li>
+                         <li>The API creates one LaunchDarkly client at startup and shares it across requests.</li>
+                         <li>The context key is <code>cluster/namespace/app</code>, so a percentage rollout keeps the same app in or out on every deploy.</li>
+                         <li>A missing or null flag skips only its own mutation. If the KEDA min replicas flag is not set, the HPA stays as it is.</li>
+                         <li>The Karpenter nodepool label comes from <code>NODEPOOL_LABEL_KEY</code> (default <code>karpenter.sh/nodepool</code>) instead of a hard-coded company label.</li>
+                         <li>The API no longer crashes when it cannot load a kubeconfig.</li>
+                         <li>The Dockerfile moved to Go 1.23, stopped running <code>go mod tidy</code> during the build, passes the GitHub token as a BuildKit secret instead of a build arg, and runs as non-root on a minimal image.</li>
+                    </ul>
+                    <p>I fixed the tests that did not compile. One CronJob test expected output that was older than the current code, so I updated the expectation to match the real behaviour. Both <code>go test ./...</code> and <code>go test -tags unit ./...</code> pass now.</p>
+               </section>
+
+               <section id="fresh" class="article-section">
+                    <h2>Installing it on a fresh cluster</h2>
+                    <p>The original setup depended on things outside the two repos: a shared actions repo, an S3 bucket for the client binary, an ECR registry and a secret created by hand. On a new cluster with no GitHub Actions at all, each of those needs a replacement.</p>
+                    <div class="article-table">
+                         <table>
+                              <thead>
+                                   <tr>
+                                        <th>Before</th>
+                                        <th>Fresh install</th>
+                                   </tr>
+                              </thead>
+                              <tbody>
+                                   <tr><td>Client binary in S3</td><td>GitHub Release asset</td></tr>
+                                   <tr><td>API image in ECR</td><td>GHCR</td></tr>
+                                   <tr><td>Company shared deploy action</td><td><code>gh-actions/kubernetes/apply</code> composite action in my org</td></tr>
+                                   <tr><td>Secret created by a separate process</td><td><code>dmm-secret</code> with <code>LD_SDK_KEY</code>, created once by hand</td></tr>
+                                   <tr><td>Datadog sidecar, SLO Terraform</td><td>Left out of the first version</td></tr>
+                              </tbody>
+                         </table>
+                    </div>
+                    <p>In the LaunchDarkly trial I create one project and all thirteen flags, and I give every JSON flag an explicit off variation so the <code>"null"</code> nodepool bug cannot come back through configuration. The API goes in with <code>helm upgrade --install</code>, two replicas and resource limits. The sample app's deploy workflow only calls <code>gh-actions/kubernetes/apply@v1</code>, the same way product teams never saw DMM before.</p>
+                    <p>My acceptance test has three checks:</p>
+                    <ul>
+                         <li>With every flag off, the manifests come through unchanged.</li>
+                         <li>Turning on the tolerations flag adds tolerations on the next deploy.</li>
+                         <li>Stopping the API makes the deploy job fail.</li>
+                    </ul>
+                    <p>HPA to KEDA stays out of the first version. It called an internal service to look up RabbitMQ queues, and it needs KEDA and a message broker on the cluster before it means anything.</p>
+               </section>
+
+               <section id="lessons" class="article-section">
+                    <h2>What I learned</h2>
+                    <p>A step that sits between build and <code>kubectl apply</code> has to fail loudly. The exit code bug was one line of behaviour, and it could have shipped a half-empty deploy on any day the API had problems.</p>
+                    <blockquote class="article-quote">If a tool rewrites every deploy, its tests and its exit code matter more than its features.</blockquote>
+                    <p>Feature flags work well for platform rules, as long as the flag context is stable and every flag has a safe off value. Random context keys quietly turned percentage rollouts into a coin flip, and nobody noticed because the targeted rules still worked.</p>
+
+                    <h3>Next steps</h3>
+                    <ul>
+                         <li>Create the LaunchDarkly trial project and run the mutation end to end with real flags.</li>
+                         <li>Write the GitHub Actions: API image to GHCR, client to GitHub Releases, and the shared apply action.</li>
+                         <li>Add an annotation to each mutated object that lists which flags changed it, so "why is my pod on that nodepool" has an answer.</li>
+                         <li>Bring back HPA to KEDA with a Kubernetes secret instead of the internal lookup service.</li>
+                    </ul>
+               </section>
+          </article>
+     </div>
+</main>
+
+<footer class="w-full bg-surface-container-lowest border-t border-outline-variant/20 pt-space-2xl pb-space-xl text-on-surface-variant"><div class="max-w-7xl mx-auto px-gutter flex flex-col md:flex-row items-center justify-between gap-4"><span class="font-label-code text-label-code text-outline">© 2026 DinhDoBaThi.</span><div class="flex items-center gap-space-lg font-body-sm text-body-sm"><a class="text-on-surface-variant hover:text-secondary transition-colors" href="index.html">Home</a><a class="text-on-surface-variant hover:text-secondary transition-colors" href="index.html#production-log">Articles</a><a class="text-on-surface-variant hover:text-secondary transition-colors" href="contact.html">Contact</a><a class="text-on-surface-variant hover:text-secondary transition-colors" href="gallery.html">Gallery</a></div></div></footer>
+</body>
+</html>
